@@ -4,10 +4,10 @@ import argparse
 
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group(required=True)
-group.add_argument("-n", metavar="HOSTNAME", help="The hostname from which to retrieve information")
-group.add_argument("-f", metavar="FILENAME", help="A file containing a list of hostnames to use")
-parser.add_argument("-d", metavar="DIRECTORY", help="Save the data in the specified directory")
-parser.parse_args()
+group.add_argument("-n", metavar="HOSTNAME", help="the hostname from which to retrieve information")
+group.add_argument("-f", metavar="FILENAME", help="a file containing a list of hostnames to use")
+parser.add_argument("-d", metavar="DIRECTORY", help="save the data in the specified directory")
+args = parser.parse_args()
 
 # Number of users: users | wc -w
 
@@ -42,3 +42,9 @@ parser.parse_args()
 
 # Interrupts: cat /proc/interrupts
 
+if args.n:
+	print args.n
+elif args.f:
+	print args.f
+if args.d:
+	print args.d
