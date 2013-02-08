@@ -64,15 +64,13 @@ INFO_COMMANDS = {
 
 # Verify that the directory exists, create it otherwise
 def verifyInfoDir(infoDir):
-	if infoDir[-1] != "/":
-		infoDir += "/"
 	if not os.path.exists(infoDir):
 		os.makedirs(infoDir)
 	return infoDir
 
 # Convert the gathered data into a more readable form
 def generateOutputFile(hostname, info, infoDir):
-	with open(infoDir + hostname, "w") as hostInfoFile:
+	with open(infoDir + "/" + hostname, "w") as hostInfoFile:
 		for key in sorted(info.iterkeys()):
 			hostInfoFile.write("{:<30}{}".format(key, info[key]))
 
@@ -97,8 +95,12 @@ def getInfo(hostname, infoDir):
 	command = "ssh {}".format(SSH_HOSTNAME_PREFIX + hostname).split(" ")
 	for info, infoCommand in INFO_COMMANDS.iteritems():
 		command.append(infoCommand)
-	data = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
-	generateOutputFile(hostname, organizeData(data), infoDir)
+	dataProcess = subprocess.Popen(command, stdout=subprocess.PIPE)
+	data = dataProcess.communicate()[0]
+	if dataProcess.returncode == 0:
+		generateOutputFile(hostname, organizeData(data), infoDir)
+	else:
+		exit(dataProcess.returncode)
 
 # Command-line arguments
 parser = argparse.ArgumentParser()
@@ -110,29 +112,25 @@ args = parser.parse_args()
 
 # Save info in user-specified directory, if given
 if args.d:
-	print "Save results in directory", args.d
 	infoDir = verifyInfoDir(args.d)
 # Otherwise, use 'mktemp -d' to create a temporary directory
 else:
 	mktemp = subprocess.Popen(['mktemp', '-d'], stdout=subprocess.PIPE)
 	if mktemp.wait() == 0:
-		infoDir = mktemp.communicate()[0].strip() + "/"
-		print "Save results in {}".format(infoDir)
+		infoDir = mktemp.communicate()[0].strip()
 	else:
 		print "Error creating temporary directory: {}".format(mktemp.communicate()[1].strip())
 		exit(1)
 
 # Either use the host given as a command-line parameter...
 if args.n:
-	print "Host given as argument:", args.n
 	getInfo(args.n, infoDir)
-# Or read the hosts from the given file
+# ...Or read the hosts from the given file
 else:
-	print "Read hosts from {}:".format(args.f)
 	with open(args.f, "r") as hostsInputFile:
 		hosts = hostsInputFile.read().splitlines()
 		for host in hosts:
-			print host
 			getInfo(host, infoDir)
 
-
+print os.path.realpath(infoDir)
+print "TODO:\nInterrupts table"
