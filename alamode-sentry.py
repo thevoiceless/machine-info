@@ -66,13 +66,13 @@ INFO_COMMANDS = {
 def verifyInfoDir(infoDir):
 	if infoDir[-1] != "/":
 		infoDir += "/"
-	print "infoDir:", infoDir
 	if not os.path.exists(infoDir):
 		os.makedirs(infoDir)
+	return infoDir
 
 # Convert the gathered data into a more readable form
-def generateOutputFile(hostname, info):
-	with open(hostname, "w") as hostInfoFile:
+def generateOutputFile(hostname, info, infoDir):
+	with open(infoDir + hostname, "w") as hostInfoFile:
 		for key in sorted(info.iterkeys()):
 			hostInfoFile.write("{:<30}{}".format(key, info[key]))
 
@@ -93,12 +93,12 @@ def organizeData(data):
 	return info
 
 # Get info about the given host
-def getInfo(hostname):
+def getInfo(hostname, infoDir):
 	command = "ssh {}".format(SSH_HOSTNAME_PREFIX + hostname).split(" ")
 	for info, infoCommand in INFO_COMMANDS.iteritems():
 		command.append(infoCommand)
 	data = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
-	generateOutputFile(hostname, organizeData(data))
+	generateOutputFile(hostname, organizeData(data), infoDir)
 
 # Command-line arguments
 parser = argparse.ArgumentParser()
@@ -111,8 +111,7 @@ args = parser.parse_args()
 # Save info in user-specified directory, if given
 if args.d:
 	print "Save results in directory", args.d
-	infoDir = args.d
-	verifyInfoDir(infoDir)
+	infoDir = verifyInfoDir(args.d)
 # Otherwise, use 'mktemp -d' to create a temporary directory
 else:
 	mktemp = subprocess.Popen(['mktemp', '-d'], stdout=subprocess.PIPE)
@@ -126,7 +125,7 @@ else:
 # Either use the host given as a command-line parameter...
 if args.n:
 	print "Host given as argument:", args.n
-	getInfo(args.n)
+	getInfo(args.n, infoDir)
 # Or read the hosts from the given file
 else:
 	print "Read hosts from {}:".format(args.f)
@@ -134,6 +133,6 @@ else:
 		hosts = hostsInputFile.read().splitlines()
 		for host in hosts:
 			print host
-			getInfo(host)
+			getInfo(host, infoDir)
 
 
