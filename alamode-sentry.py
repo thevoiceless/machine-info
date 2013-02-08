@@ -37,8 +37,10 @@ import argparse
 import subprocess
 import os
 
-# Constants for SSH and commands to be executed
+# SSH username
 SSH_HOSTNAME_PREFIX = "rimoses@"
+# Dictionary mapping a key to one or more commands
+# The keys aren't really necessary, but they help to explain the purpose of their corresponding commands
 INFO_COMMANDS = {
 	'num_users': "echo num_users=`users | wc -w`;",
 	'num_processes': "echo num_processes=`ps -A --no-headers | wc -l`;",
@@ -60,22 +62,38 @@ INFO_COMMANDS = {
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
 
-# Directory in which to save info
+# Directory in which to save the output file(s)
 infoDir = ""
+
+# Convert the gathered data into a more readable form
+def generateOutputFile(hostname, data):
+	pass
+
+def organizeData(data):
+	info = {}
+	lines = data.splitlines(True)
+	skipline = False
+	for line in lines:
+		if line == "--START_INTERRUPT_TABLE--\n":
+			skipline = True
+		elif line == "--END_INTERRUPT_TABLE--\n":
+			skipline = False
+			continue
+		if not skipline:
+			splitInfo = line.split("=")
+			print splitInfo
+			info[splitInfo[0]] = splitInfo[1]
+	print info
+
 
 # Get info about the given host
 def getInfo(hostname):
-	with open(hostname, "w") as hostInfoFile:
-		command = "ssh {}".format(SSH_HOSTNAME_PREFIX + hostname).split(" ")
-		for info, theCommandToGetTheInfo in INFO_COMMANDS.iteritems():
-			command.append(theCommandToGetTheInfo)
-		# command.append(COMMAND_NUM_USERS)
-		# command.append(COMMAND_NUM_PROCESSES)
-		# print command
-		# p = subprocess.Popen(command)
-		# p = subprocess.Popen(command, stdout=subprocess.PIPE)
-		# print p.communicate()[0]
-		hostInfoFile.write(subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0])
+	command = "ssh {}".format(SSH_HOSTNAME_PREFIX + hostname).split(" ")
+	for info, infoCommand in INFO_COMMANDS.iteritems():
+		command.append(infoCommand)
+	data = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
+	organizeData(data)
+	generateOutputFile(hostname, data)
 
 # Command-line arguments
 parser = argparse.ArgumentParser()
