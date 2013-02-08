@@ -1,14 +1,5 @@
 #!/usr/bin/python
 
-import argparse
-
-parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group(required=True)
-group.add_argument("-n", metavar="HOSTNAME", help="the hostname from which to retrieve information")
-group.add_argument("-f", metavar="FILENAME", help="a file containing a list of hostnames to use")
-parser.add_argument("-d", metavar="DIRECTORY", help="save the data in the specified directory")
-args = parser.parse_args()
-
 # Number of users: users | wc -w
 
 # Number of processes: ps -A --no-headers | wc -l
@@ -42,9 +33,59 @@ args = parser.parse_args()
 
 # Interrupts: cat /proc/interrupts
 
-if args.n:
-	print args.n
-elif args.f:
-	print args.f
+import argparse
+import subprocess
+import os
+
+# Constants for SSH and commands to be executed
+SSH_HOSTNAME_PREFIX = "rimoses@"
+COMMAND_NUM_USERS = "users | wc -w;"
+
+# Directory in which to save info
+infoDir = ""
+
+# Get info about the given host
+def getInfo(hostname):
+	with open(hostname, "w") as hostInfoFile:
+		command = "ssh {}".format(SSH_HOSTNAME_PREFIX + hostname).split(" ")
+		command.append(COMMAND_NUM_USERS)
+		print command
+		# p = subprocess.Popen(command)
+		hostInfoFile.write(subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0])
+
+# Command-line arguments
+parser = argparse.ArgumentParser()
+group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument("-n", metavar="HOSTNAME", help="the hostname from which to retrieve information")
+group.add_argument("-f", metavar="FILENAME", help="a file containing a list of hostnames to use")
+parser.add_argument("-d", metavar="DIRECTORY", help="save the data in the specified directory")
+args = parser.parse_args()
+
+# Save info in user-specified directory, if given
 if args.d:
-	print args.d
+	print "Save results in directory", args.d
+	infoDir = args.d
+# Otherwise, use 'mktemp -d' to create a temporary directory
+else:
+	mktemp = subprocess.Popen(['mktemp', '-d'], stdout=subprocess.PIPE)
+	if mktemp.wait() == 0:
+		infoDir = mktemp.communicate()[0].strip()
+		print "Save results in {}".format(infoDir)
+	else:
+		print "Error creating temporary directory: {}".format(mktemp.communicate()[1].strip())
+		exit(1)
+
+# Either use the host given as a command-line parameter...
+if args.n:
+	print "Host given as argument:", args.n
+	getInfo(args.n)
+# Or read the hosts from the given file
+else:
+	print "Read hosts from {}:".format(args.f)
+	with open(args.f, "r") as hostsInputFile:
+		hosts = hostsInputFile.read().splitlines()
+		for host in hosts:
+			print host
+			getInfo(host)
+
+
