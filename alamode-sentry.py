@@ -1,6 +1,11 @@
 #!/usr/bin/python
 
-# Number of users: users | wc -w
+# This script uses SSH to sign into a remote machine and collect various information
+# by executing commands on the remote host. The general commands for collecting this 
+# information are listed below, but the actual commands run on the remote host vary
+# slightly to make the results more readable.
+
+# Number of users logged in: users | wc -w
 
 # Number of processes: ps -A --no-headers | wc -l
 # 	Running: ps axo state | grep R | wc -l
@@ -19,11 +24,11 @@
 #		15 min: uptime | awk '{print $12}' | sed s/,//
 
 # Current utilization: top -b -n 1 | grep ^Cpu
-#	Bonus - Show details for each core, run "top" and then press 1
+#	Bonus - Show details for each core: run "top" and then press 1
 
 # Cache:
 #	Number of levels: ls /sys/devices/system/cpu/cpu0/cache/ | wc -w
-#		Each line is a level, in increasing order:
+#		Each line in the result is a level, in increasing order:
 #			Type: cat /sys/devices/system/cpu/cpu0/cache/index*/type
 #			Size: cat /sys/devices/system/cpu/cpu0/cache/index*/size
 
@@ -39,7 +44,10 @@ import os
 
 # SSH username
 SSH_HOSTNAME_PREFIX = "rimoses@"
-# Dictionary mapping a key to one or more commands
+# Key to separate the table of interrupt data from the rest of the information
+# This is only needed because the interrupt data spans multiple lines
+KEY_INTERRUPT_TABLE = "table_interrupt_data"
+# Dictionary that maps a key to one or more commands
 # The keys aren't really necessary, but they help to explain the purpose of their corresponding commands
 INFO_COMMANDS = {
 	'num_users': "echo num_users=`users | wc -w`;",
@@ -60,32 +68,39 @@ INFO_COMMANDS = {
 	'cache_sizes': "let levels=`ls /sys/devices/system/cpu/cpu0/cache/ | wc -w`; for ((l=0; l<$levels; l++)); do let n=$l+1; echo \"lvl${n}_cache_size=`cat /sys/devices/system/cpu/cpu0/cache/index${l}/size | sed s/K/\ kB/`\"; done;",
 	'memory_total': "cat /proc/meminfo | grep MemTotal | awk '{print \"memory_total=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
-	'interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
+	'table_interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
 
-# Verify that the directory exists, create it otherwise
+# Verify that the directory exists, otherwise create it
 def verifyInfoDir(infoDir):
 	if not os.path.exists(infoDir):
 		os.makedirs(infoDir)
-	return infoDir
 
 # Convert the gathered data into a more readable form
 def generateOutputFile(hostname, info, infoDir):
 	with open(infoDir + "/" + hostname, "w") as hostInfoFile:
 		for key in sorted(info.iterkeys()):
-			hostInfoFile.write("{:<30}{}".format(key, info[key]))
+			if key == KEY_INTERRUPT_TABLE:
+				hostInfoFile.write("{}\n{}".format(key, info[key]))
+			else:
+				hostInfoFile.write("{:<30}{}".format(key, info[key]))
 
 # Parse the gathered information, save it in a dictionary, sort it
 def organizeData(data):
 	info = {}
 	lines = data.splitlines(True)
-	skipline = False
+	readingInterruptsTable = False
+	interruptsTable = ""
 	for line in lines:
 		if line == "--START_INTERRUPT_TABLE--\n":
-			skipline = True
-		elif line == "--END_INTERRUPT_TABLE--\n":
-			skipline = False
+			readingInterruptsTable = True
 			continue
-		if not skipline:
+		elif line == "--END_INTERRUPT_TABLE--\n":
+			readingInterruptsTable = False
+			info[KEY_INTERRUPT_TABLE] = interruptsTable
+			continue
+		if readingInterruptsTable:
+			interruptsTable += line
+		else:
 			splitInfo = line.split("=")
 			info[splitInfo[0]] = splitInfo[1]
 	return info
@@ -112,25 +127,28 @@ args = parser.parse_args()
 
 # Save info in user-specified directory, if given
 if args.d:
-	infoDir = verifyInfoDir(args.d)
+	infoDir = args.d
+	verifyInfoDir(infoDir)
 # Otherwise, use 'mktemp -d' to create a temporary directory
 else:
 	mktemp = subprocess.Popen(['mktemp', '-d'], stdout=subprocess.PIPE)
+	# If successful, save location of the directory
 	if mktemp.wait() == 0:
 		infoDir = mktemp.communicate()[0].strip()
+	# Otherwise, print SSH error message
 	else:
 		print "Error creating temporary directory: {}".format(mktemp.communicate()[1].strip())
 		exit(1)
 
-# Either use the host given as a command-line parameter...
+# Use the host given as a command-line parameter...
 if args.n:
 	getInfo(args.n, infoDir)
-# ...Or read the hosts from the given file
+# ...Or read the hosts from the given file and collect info one at a time
 else:
 	with open(args.f, "r") as hostsInputFile:
 		hosts = hostsInputFile.read().splitlines()
 		for host in hosts:
 			getInfo(host, infoDir)
 
+# Print the path to the output directory
 print os.path.realpath(infoDir)
-print "TODO:\nInterrupts table"
