@@ -62,13 +62,21 @@ INFO_COMMANDS = {
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
 
-# Directory in which to save the output file(s)
-infoDir = ""
+# Verify that the directory exists, create it otherwise
+def verifyInfoDir(infoDir):
+	if infoDir[-1] != "/":
+		infoDir += "/"
+	print "infoDir:", infoDir
+	if not os.path.exists(infoDir):
+		os.makedirs(infoDir)
 
 # Convert the gathered data into a more readable form
 def generateOutputFile(hostname, info):
-	pass
+	with open(hostname, "w") as hostInfoFile:
+		for key in sorted(info.iterkeys()):
+			hostInfoFile.write("{:<30}{}".format(key, info[key]))
 
+# Parse the gathered information, save it in a dictionary, sort it
 def organizeData(data):
 	info = {}
 	lines = data.splitlines(True)
@@ -82,7 +90,6 @@ def organizeData(data):
 		if not skipline:
 			splitInfo = line.split("=")
 			info[splitInfo[0]] = splitInfo[1]
-	# print sorted(info.iterkeys())
 	return info
 
 # Get info about the given host
@@ -105,11 +112,12 @@ args = parser.parse_args()
 if args.d:
 	print "Save results in directory", args.d
 	infoDir = args.d
+	verifyInfoDir(infoDir)
 # Otherwise, use 'mktemp -d' to create a temporary directory
 else:
 	mktemp = subprocess.Popen(['mktemp', '-d'], stdout=subprocess.PIPE)
 	if mktemp.wait() == 0:
-		infoDir = mktemp.communicate()[0].strip()
+		infoDir = mktemp.communicate()[0].strip() + "/"
 		print "Save results in {}".format(infoDir)
 	else:
 		print "Error creating temporary directory: {}".format(mktemp.communicate()[1].strip())
