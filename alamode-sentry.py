@@ -43,21 +43,21 @@ SSH_HOSTNAME_PREFIX = "rimoses@"
 # The keys aren't really necessary, but they help to explain the purpose of their corresponding commands
 INFO_COMMANDS = {
 	'num_users': "echo num_users=`users | wc -w`;",
-	'num_processes': "echo num_processes=`ps -A --no-headers | wc -l`;",
-	'num_running_processes': "ps axo state | grep R | wc -l | awk '{print \"num_running_processes=\" $1}';",
-	'num_sleeping_processes': "ps axo state | grep S | wc -l | awk '{print \"num_sleeping_processes=\" $1}';",
-	'num_stopped_processes': "ps axo state | grep T | wc -l | awk '{print \"num_stopped_processes=\" $1}';",
-	'num_zombie_processes': "ps axo state | grep Z | wc -l | awk '{print \"num_zombie_processes=\" $1}';",
+	'processes_total': "echo processes_total=`ps -A --no-headers | wc -l`;",
+	'processes_num_running': "ps axo state | grep R | wc -l | awk '{print \"processes_num_running=\" $1}';",
+	'processes_num_sleeping': "ps axo state | grep S | wc -l | awk '{print \"processes_num_sleeping=\" $1}';",
+	'processes_num_stopped': "ps axo state | grep T | wc -l | awk '{print \"processes_num_stopped=\" $1}';",
+	'processes_num_zombie': "ps axo state | grep Z | wc -l | awk '{print \"processes_num_zombie=\" $1}';",
 	'processor_name': "echo processor_name=`cat /proc/cpuinfo | grep \"model name\" | uniq | sed s/^.*:\ *//`;",
 	'processor_speed': "echo processor_speed=`cat /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq | uniq | awk '{print $1/1000000 }'` GHz;",
 	'processor_num_real_cores': "echo processor_num_real_cores=`cat /proc/cpuinfo | grep \"cpu cores\" | uniq | awk '{print $4}'`;",
 	'processor_num_virt_cores': "echo processor_num_virt_cores=`cat /proc/cpuinfo | grep \"^processor\" | wc -l`;",
-	'avg_load_1min': "echo avg_load_1min=`uptime | awk '{print $10}' | sed s/,//`;",
-	'avg_load_5min': "echo avg_load_5min=`uptime | awk '{print $11}' | sed s/,//`;",
-	'avg_load_15min': "echo avg_load_15min=`uptime | awk '{print $12}' | sed s/,//`;",
+	'load_avg_01min': "echo load_avg_01min=`uptime | awk '{print $10}' | sed s/,//`;",
+	'load_avg_05min': "echo load_avg_05min=`uptime | awk '{print $11}' | sed s/,//`;",
+	'load_avg_15min': "echo load_avg_15min=`uptime | awk '{print $12}' | sed s/,//`;",
 	'cpu_utilization': "echo cpu_utilization=`top -b -n 1 | grep ^Cpu | sed s/^.*:\ *//`;",
-	'cache_types': "let levels=`ls /sys/devices/system/cpu/cpu0/cache/ | wc -w`; for ((l=0; l<$levels; l++)); do let n=$l+1; echo \"lvl${n}_type=`cat /sys/devices/system/cpu/cpu0/cache/index${l}/type | sed s/K/\ kB/`\"; done;",
-	'cache_sizes': "let levels=`ls /sys/devices/system/cpu/cpu0/cache/ | wc -w`; for ((l=0; l<$levels; l++)); do let n=$l+1; echo \"lvl${n}_size=`cat /sys/devices/system/cpu/cpu0/cache/index${l}/size | sed s/K/\ kB/`\"; done;",
+	'cache_types': "let levels=`ls /sys/devices/system/cpu/cpu0/cache/ | wc -w`; for ((l=0; l<$levels; l++)); do let n=$l+1; echo \"lvl${n}_cache_type=`cat /sys/devices/system/cpu/cpu0/cache/index${l}/type | sed s/K/\ kB/`\"; done;",
+	'cache_sizes': "let levels=`ls /sys/devices/system/cpu/cpu0/cache/ | wc -w`; for ((l=0; l<$levels; l++)); do let n=$l+1; echo \"lvl${n}_cache_size=`cat /sys/devices/system/cpu/cpu0/cache/index${l}/size | sed s/K/\ kB/`\"; done;",
 	'memory_total': "cat /proc/meminfo | grep MemTotal | awk '{print \"memory_total=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
@@ -66,7 +66,7 @@ INFO_COMMANDS = {
 infoDir = ""
 
 # Convert the gathered data into a more readable form
-def generateOutputFile(hostname, data):
+def generateOutputFile(hostname, info):
 	pass
 
 def organizeData(data):
@@ -81,10 +81,9 @@ def organizeData(data):
 			continue
 		if not skipline:
 			splitInfo = line.split("=")
-			print splitInfo
 			info[splitInfo[0]] = splitInfo[1]
-	print info
-
+	# print sorted(info.iterkeys())
+	return info
 
 # Get info about the given host
 def getInfo(hostname):
@@ -92,8 +91,7 @@ def getInfo(hostname):
 	for info, infoCommand in INFO_COMMANDS.iteritems():
 		command.append(infoCommand)
 	data = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0]
-	organizeData(data)
-	generateOutputFile(hostname, data)
+	generateOutputFile(hostname, organizeData(data))
 
 # Command-line arguments
 parser = argparse.ArgumentParser()
