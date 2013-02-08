@@ -75,22 +75,26 @@ def verifyInfoDir(infoDir):
 	if not os.path.exists(infoDir):
 		os.makedirs(infoDir)
 
-# Convert the gathered data into a more readable form
+# Save the information to an output file with the same same as the host
 def generateOutputFile(hostname, info, infoDir):
+	# Open the output file and write the (key, value) pairs to it in sorted-by-key order
 	with open(infoDir + "/" + hostname, "w") as hostInfoFile:
 		for key in sorted(info.iterkeys()):
+			# The interrupts table is special
 			if key == KEY_INTERRUPT_TABLE:
 				hostInfoFile.write("{}\n{}".format(key, info[key]))
 			else:
 				hostInfoFile.write("{:<30}{}".format(key, info[key]))
 
-# Parse the gathered information, save it in a dictionary, sort it
+# Organize the gathered information into a dictionary
 def organizeData(data):
 	info = {}
 	lines = data.splitlines(True)
+	# The contents of the table will be saved as a single string, since splitlines(True) preserves newlines
 	readingInterruptsTable = False
 	interruptsTable = ""
 	for line in lines:
+		# Do not include the table start/end markers
 		if line == "--START_INTERRUPT_TABLE--\n":
 			readingInterruptsTable = True
 			continue
@@ -100,6 +104,7 @@ def organizeData(data):
 			continue
 		if readingInterruptsTable:
 			interruptsTable += line
+		# The (key, value) pairs on each line are separated by '='
 		else:
 			splitInfo = line.split("=")
 			info[splitInfo[0]] = splitInfo[1]
@@ -107,13 +112,18 @@ def organizeData(data):
 
 # Get info about the given host
 def getInfo(hostname, infoDir):
+	# Build the SSH command, starting with the connection to the host
 	command = "ssh {}".format(SSH_HOSTNAME_PREFIX + hostname).split(" ")
+	# Add each command from the INFO_COMMANDS dictionary
 	for info, infoCommand in INFO_COMMANDS.iteritems():
 		command.append(infoCommand)
+	# Run the resulting command
 	dataProcess = subprocess.Popen(command, stdout=subprocess.PIPE)
 	data = dataProcess.communicate()[0]
+	# If there were no issues, generate the output file
 	if dataProcess.returncode == 0:
 		generateOutputFile(hostname, organizeData(data), infoDir)
+	# Otherwise, exit with the return code from SSH
 	else:
 		exit(dataProcess.returncode)
 
