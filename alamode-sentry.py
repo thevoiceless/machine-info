@@ -133,7 +133,7 @@ if args.d:
 else:
 	mktemp = subprocess.Popen(['mktemp', '-d'], stdout=subprocess.PIPE)
 	# If successful, save location of the directory
-	if mktemp.wait() == 0:
+	if mktemp.returncode == 0:
 		infoDir = mktemp.communicate()[0].strip()
 	# Otherwise, print SSH error message
 	else:
