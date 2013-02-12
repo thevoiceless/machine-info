@@ -130,8 +130,8 @@ def getInfo(hostname, infoDir):
 # Command-line arguments
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group(required=True)
-group.add_argument("-n", metavar="HOSTNAME", help="the hostname from which to retrieve information")
-group.add_argument("-f", metavar="FILENAME", help="a file containing a list of hostnames to use")
+group.add_argument("-n", metavar="HOSTNAME", help="the hostname from which to retrieve information, required unless file is given")
+group.add_argument("-f", metavar="FILENAME", help="a file containing a list of hostnames to use, required unless a hostname is given")
 parser.add_argument("-d", metavar="DIRECTORY", help="save the data in the specified directory")
 args = parser.parse_args()
 
