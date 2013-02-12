@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # This script uses SSH to sign into a remote machine and collect various information
 # by executing commands on the remote host. The general commands for collecting this 
