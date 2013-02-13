@@ -1,2 +1,52 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+require 'fcntl'
+
+def exit_display_usage(opts)
+	puts opts
+	exit 1
+end
+
+# Parse command-line arguments
+# Python's Argparse is far superior to Ruby's OptionParser, so this gets messy
+options = {}
+args = OptionParser.new do |opts|
+	opts.banner = "Usage: alamode-publish (-s DIRECTORY | Pipe from STDIN) [-d DIRECTORY]"
+
+	opts.on("-s", "--input-dir DIRECTORY", "Directory in which to look for host data files") do |param|
+		options[:input_dir] = param
+	end
+
+	opts.on("-d", "--output-dir [DIRECTORY]", "Directory in which to save HTML files (defaults to stdout if not given)") do |param|
+		options[:output_dir] = param
+	end
+
+	opts.on_tail("-h", "--help", "Show this message") do
+		puts opts
+		exit
+	end
+end
+args.parse!
+# Set flag if piping from STDIN
+options[:input_from_pipe] = (STDIN.fcntl(Fcntl::F_GETFL, 0) == 0)
+# Either read from STDIN or a given directory
+if options[:input_from_pipe]
+	# Cannot accept both
+	if options[:input_dir]
+		exit_display_usage(args)
+	end
+# Must specify input directory if not reading from STDIN
+elsif not options[:input_dir]
+	exit_display_usage(args)
+end
+# Check if output directory was given
+if options.has_key?(:output_dir)
+	if options[:output_dir].nil?
+		exit_display_usage(args)
+	end
+end
+
+
+p options
+p ARGV
