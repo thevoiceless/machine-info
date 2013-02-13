@@ -76,10 +76,38 @@ if options.has_key?(:output_dir)
 end
 
 # Finally, the fun stuff
-puts "Reading from: #{input_dir_path}"
-if output_dir_path
-	puts "Output to: #{output_dir_path}"
-else
-	puts "Output to: STDOUT"
+puts "Reading file(s) from: #{input_dir_path}"
+# Get the list of files in the input directory
+files = Dir.glob(input_dir_path + "*")
+num_files = files.length
+# Go through each file
+for file in files
+	puts file
+	information = {}
+	reading_table = false
+	File.open(file, "r") do |f|
+		# Go through each line and split into (key, value) pairs
+		f.each_line do |line|
+			if line.strip == "table_interrupt_data"
+				reading_table = true
+				information[:table_interrupt_data] = ""
+				next
+			end
+			if reading_table
+				information[:table_interrupt_data] << line
+			else
+				words = line.split(' ', 2)
+				words.map { |x| x.strip! }
+				# p words
+				information[words.first.to_sym] = words.last
+			end
+		end
+	end
+	if output_dir_path
+		puts "Output to: #{output_dir_path}"
+	else
+		puts "Output to: STDOUT"
+		puts information
+	end
 end
 puts options
