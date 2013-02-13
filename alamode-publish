@@ -39,14 +39,31 @@ if options[:input_from_pipe]
 # Must specify input directory if not reading from STDIN
 elsif not options[:input_dir]
 	exit_display_usage(args)
+# Input directory must exist
+elsif not File.directory?(options[:input_dir])
+	puts "The given input directory does not exist."
+	exit_display_usage(args)
 end
 # Check if output directory was given
 if options.has_key?(:output_dir)
+	# Flag was given with no argument
 	if options[:output_dir].nil?
 		exit_display_usage(args)
+	# Try to create directory if it doesn't already exist
+	else
+		begin
+			Dir.mkdir(options[:output_dir])
+		rescue Exception => e
+			puts "Error creating directory: #{e}"
+			exit 1
+		end
 	end
 end
 
+if options[:input_from_pipe]
+	puts "foo"
+else
+	puts "bar"
+end
 
 p options
-p ARGV
