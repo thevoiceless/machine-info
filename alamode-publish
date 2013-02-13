@@ -8,7 +8,14 @@ def exit_display_usage(opts)
 	exit 1
 end
 
-# Parse command-line arguments
+def exit_if_dir_not_exist(path, args)
+	if not File.directory?(path.chomp)
+		puts "The given input directory does not exist."
+		exit_display_usage(args)
+	end
+end
+
+# Parse and validate command-line arguments
 # Python's Argparse is far superior to Ruby's OptionParser, so this gets messy
 options = {}
 args = OptionParser.new do |opts|
@@ -28,42 +35,51 @@ args = OptionParser.new do |opts|
 	end
 end
 args.parse!
+
+# Because OptionParser has no built-in way to specify mutually exclusive groups, it has to be done manually
 # Set flag if piping from STDIN
 options[:input_from_pipe] = (STDIN.fcntl(Fcntl::F_GETFL, 0) == 0)
-# Either read from STDIN or a given directory
+# Read from STDIN 
 if options[:input_from_pipe]
-	# Cannot accept both
+	# Cannot also read from a directory
 	if options[:input_dir]
 		exit_display_usage(args)
 	end
+	# Verify that the path is valid
+	input_dir_path = STDIN.gets
+	exit_if_dir_not_exist(input_dir_path, args)
 # Must specify input directory if not reading from STDIN
-elsif not options[:input_dir]
-	exit_display_usage(args)
-# Input directory must exist
-elsif not File.directory?(options[:input_dir])
-	puts "The given input directory does not exist."
+elsif options[:input_dir]
+	input_dir_path = options[:input_dir]
+	# Directory must exist
+	exit_if_dir_not_exist(input_dir_path, args)
+# The user did not specify an input path
+else
 	exit_display_usage(args)
 end
+
 # Check if output directory was given
 if options.has_key?(:output_dir)
-	# Flag was given with no argument
+	# Flag "-d" was given with no argument
 	if options[:output_dir].nil?
 		exit_display_usage(args)
 	# Try to create directory if it doesn't already exist
 	else
 		begin
-			Dir.mkdir(options[:output_dir])
+			Dir.mkdir(options[:output_dir]) if not File.directory?(options[:output_dir])
 		rescue Exception => e
 			puts "Error creating directory: #{e}"
 			exit 1
 		end
 	end
+	output_dir_path = options[:output_dir]
 end
 
-if options[:input_from_pipe]
-	puts "foo"
+# Finally, the fun stuff
+puts "Reading from: #{input_dir_path}"
+if output_dir_path
+	puts "Output to: #{output_dir_path}"
 else
-	puts "bar"
+	puts "Output to: STDOUT"
 end
-
-p options
+puts options
