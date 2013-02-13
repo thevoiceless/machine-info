@@ -80,13 +80,15 @@ def generateOutputFile(hostname, info, infoDir):
 	# Open the output file and write the (key, value) pairs to it in sorted-by-key order
 	with open(infoDir + "/" + hostname, "w") as hostInfoFile:
 		for key in sorted(info.iterkeys()):
-			# The interrupts table is special
+			# The interrupts table is special, save it for last
 			if key == KEY_INTERRUPT_TABLE:
 				hostInfoFile.write("{}\n{}".format(key, info[key]))
 			else:
-				hostInfoFile.write("{:<30}{}".format(key, info[key]))
+				hostInfoFile.write("{}={}".format(key, info[key]))
 
 # Organize the gathered information into a dictionary
+# This makes it easier to write the interrupts table last, but it's not really necessary
+# organizeData and generateOutputFile could probably be combined
 def organizeData(data):
 	info = {}
 	lines = data.splitlines(True)
@@ -143,7 +145,7 @@ if args.d:
 else:
 	mktemp = subprocess.Popen(['mktemp', '-d'], stdout=subprocess.PIPE)
 	# If successful, save location of the directory
-	if mktemp.returncode == 0:
+	if mktemp.wait() == 0:
 		infoDir = mktemp.communicate()[0].strip()
 	# Otherwise, print SSH error message
 	else:

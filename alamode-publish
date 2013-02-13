@@ -2,6 +2,7 @@
 
 require 'optparse'
 require 'fcntl'
+require 'erb'
 
 def exit_display_usage(opts)
 	puts opts
@@ -88,17 +89,16 @@ for file in files
 	File.open(file, "r") do |f|
 		# Go through each line and split into (key, value) pairs
 		f.each_line do |line|
+			# The whole interrupts table is one big value
 			if line.strip == "table_interrupt_data"
 				reading_table = true
 				information[:table_interrupt_data] = ""
-				next
-			end
-			if reading_table
+			elsif reading_table
 				information[:table_interrupt_data] << line
+			# Split into two parts based on the first whitespace from the left
 			else
-				words = line.split(' ', 2)
+				words = line.split('=', 2)
 				words.map { |x| x.strip! }
-				# p words
 				information[words.first.to_sym] = words.last
 			end
 		end
