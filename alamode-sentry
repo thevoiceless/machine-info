@@ -76,41 +76,34 @@ def verifyInfoDir(infoDir):
 		os.makedirs(infoDir)
 
 # Save the information to an output file with the same same as the host
-def generateOutputFile(hostname, info, infoDir):
-	# Open the output file and write the (key, value) pairs to it in sorted-by-key order
-	with open(infoDir + "/" + hostname, "w") as hostInfoFile:
-		for key in sorted(info.iterkeys()):
-			# The interrupts table is special, save it for last
-			if key == KEY_INTERRUPT_TABLE:
-				hostInfoFile.write("{}\n{}".format(key, info[key]))
-			else:
-				hostInfoFile.write("{}={}".format(key, info[key]))
-
-# Organize the gathered information into a dictionary
-# This makes it easier to write the interrupts table last, but it's not really necessary
-# organizeData and generateOutputFile could probably be combined
-def organizeData(data):
-	info = {}
+def generateOutputFile(hostname, data, infoDir):
 	lines = data.splitlines(True)
-	# The contents of the table will be saved as a single string, since splitlines(True) preserves newlines
-	readingInterruptsTable = False
+	processingInterruptsTable = False
 	interruptsTable = ""
+	newLines = []
+	# Iterate through lines and extract the interrupts table
+	# This is done so that:
+	#	1. The table can be written to file last
+	#	2. The rest of the lines can be sorted without messing up the table
 	for line in lines:
-		# Do not include the table start/end markers
+		# Remove the table start/end markers
 		if line == "--START_INTERRUPT_TABLE--\n":
-			readingInterruptsTable = True
+			processingInterruptsTable = True
 			continue
 		elif line == "--END_INTERRUPT_TABLE--\n":
-			readingInterruptsTable = False
-			info[KEY_INTERRUPT_TABLE] = interruptsTable
+			processingInterruptsTable = False
 			continue
-		if readingInterruptsTable:
+		if processingInterruptsTable:
 			interruptsTable += line
-		# The (key, value) pairs on each line are separated by '='
 		else:
-			splitInfo = line.split("=")
-			info[splitInfo[0]] = splitInfo[1]
-	return info
+			newLines.append(line)
+	# Write the sorted lines to the output file, then the table
+	with open(infoDir + "/" + hostname, "w") as hostInfoFile:
+		newLines.sort()
+		for line in newLines:
+			hostInfoFile.write(line)
+		hostInfoFile.write("{}\n".format(KEY_INTERRUPT_TABLE))
+		hostInfoFile.write(interruptsTable)
 
 # Get info about the given host
 def getInfo(hostname, infoDir):
@@ -124,7 +117,7 @@ def getInfo(hostname, infoDir):
 	data = dataProcess.communicate()[0]
 	# If there were no issues, generate the output file
 	if dataProcess.returncode == 0:
-		generateOutputFile(hostname, organizeData(data), infoDir)
+		generateOutputFile(hostname, data, infoDir)
 	# Otherwise, exit with the return code from SSH
 	else:
 		exit(dataProcess.returncode)
