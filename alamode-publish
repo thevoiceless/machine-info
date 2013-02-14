@@ -11,7 +11,7 @@ end
 
 def exit_if_dir_not_exist(path, args)
 	if not File.directory?(path.chomp)
-		puts "The given input directory does not exist."
+		puts "The given input directory does not exist.\n\n"
 		exit_display_usage(args)
 	end
 end
