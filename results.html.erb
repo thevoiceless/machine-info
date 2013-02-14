@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Machine Information</title>
 </head>
 <body>
+	<% all_info.each_pair do |key, value| %>
+		<p><%= key %>:</p>
+		<p><%= value %></p>
+	<% end %>
 </body>
 </html>

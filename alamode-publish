@@ -82,9 +82,10 @@ puts "Reading file(s) from: #{input_dir_path}"
 files = Dir.glob(input_dir_path + "*")
 num_files = files.length
 # Go through each file
+all_info = {}
 for file in files
 	puts file
-	information = {}
+	machine_info = {}
 	reading_table = false
 	File.open(file, "r") do |f|
 		# Go through each line and split into (key, value) pairs
@@ -92,24 +93,27 @@ for file in files
 			# The whole interrupts table is one big value
 			if line.strip == "table_interrupt_data"
 				reading_table = true
-				information[:table_interrupt_data] = ""
+				machine_info[:table_interrupt_data] = ""
 			elsif reading_table
-				information[:table_interrupt_data] << line
-			# Split into two parts based on the first whitespace from the left
+				machine_info[:table_interrupt_data] << line
+			# Split into two parts based on '='
 			else
 				words = line.split('=', 2)
 				words.map { |x| x.strip! }
-				information[words.first.to_sym] = words.last
+				machine_info[words.first.to_sym] = words.last
 			end
 		end
 	end
-	erb_html = ERB.new(File.open("results.html.erb").read)
-	if output_dir_path
-		puts "Output to: #{output_dir_path}"
-		# puts information
-	else
-		puts "Output to: STDOUT"
-		# puts information
-	end
+	# Add this machine's info to the all_info hash
+	# Replace "-" with "_" when converting to symbol
+	all_info[File.basename(file.sub("-", "_")).to_sym] = machine_info
 end
-puts options
+# puts all_info
+erb_html = ERB.new(File.open("results.html.erb").read)
+if output_dir_path
+	puts "Output to: #{output_dir_path}"
+else
+	puts "Output to: STDOUT"
+	puts erb_html.result(binding())
+end
+# puts options
