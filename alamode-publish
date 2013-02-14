@@ -103,11 +103,13 @@ for file in files
 			end
 		end
 	end
+	erb_html = ERB.new(File.open("results.html.erb").read)
 	if output_dir_path
 		puts "Output to: #{output_dir_path}"
+		# puts information
 	else
 		puts "Output to: STDOUT"
-		puts information
+		# puts information
 	end
 end
 puts options
