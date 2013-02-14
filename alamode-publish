@@ -76,7 +76,6 @@ if options.has_key?(:output_dir)
 	output_dir_path = options[:output_dir]
 end
 
-# Finally, the fun stuff
 # Get the list of files in the input directory
 input_dir_path << '/' unless input_dir_path[-1, 1] == '/'
 files = Dir.glob(input_dir_path + "*")
@@ -105,7 +104,6 @@ for file in files
 			end
 		end
 	end
-
 	# Add this machine's info to the all_info array
 	all_info << machine_info
 end
@@ -120,4 +118,3 @@ if output_dir_path
 else
 	puts erb_html.result(binding())
 end
-# puts options
