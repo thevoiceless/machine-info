@@ -78,6 +78,7 @@ end
 
 # Finally, the fun stuff
 # Get the list of files in the input directory
+input_dir_path << '/' unless input_dir_path[-1, 1] == '/'
 files = Dir.glob(input_dir_path + "*")
 num_files = files.length
 # Go through each file

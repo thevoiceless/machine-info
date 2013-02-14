@@ -69,15 +69,16 @@
 	<table class="table table-striped table-bordered">
 		<tbody>
 			<tr>
-				<td colspan="2"><h5>Cache</h5></td>
+				<td colspan="3"><h5>Cache</h5></td>
 			</tr>
 			<% num_cache_levels.times do |level| %>
 			<tr>
-				<td>Level <%= level + 1 %> type</td>
+				<td rowspan="2" class="section">Level <%= level + 1 %></td>
+				<td>Type</td>
 				<td><%= info["lvl#{level + 1}_cache_type".to_sym] %></td>
 			</tr>
 			<tr>
-				<td>Level <%= level + 1 %> size</td>
+				<td>Size</td>
 				<td><%= info["lvl#{level + 1}_cache_size".to_sym] %></td>
 			</tr>
 			<% end %>
@@ -98,7 +99,8 @@
 			</tr>
 		</tbody>
 	</table>
-
+	<table class="table table-striped table-bordered">
+		<tbody>
 			<tr>
 				<td colspan="2"><h5>Processes</h5></td>
 			</tr>
