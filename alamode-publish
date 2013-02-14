@@ -111,6 +111,9 @@ end
 erb_html = ERB.new(File.open("results.html.erb").read)
 if output_dir_path
 	puts "Output to: #{output_dir_path}"
+	File.open(output_dir_path.strip << "/index.html", "w") do |f|
+		f.write(erb_html.result(binding()))
+	end
 else
 	puts erb_html.result(binding())
 end
