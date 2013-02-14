@@ -109,6 +109,8 @@ for file in files
 	all_info << machine_info
 end
 erb_html = ERB.new(File.open("results.html.erb").read)
+bootstrap_css_path = File.absolute_path("bootstrap.min.css")
+index_css_path = File.absolute_path("index.css")
 if output_dir_path
 	puts "Output to: #{output_dir_path}"
 	File.open(output_dir_path.strip << "/index.html", "w") do |f|

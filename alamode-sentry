@@ -43,13 +43,14 @@ import subprocess
 import os
 
 # SSH username
-SSH_HOSTNAME_PREFIX = "rimoses@"
+SSH_HOSTNAME_PREFIX = subprocess.Popen(['whoami'], stdout=subprocess.PIPE).communicate()[0].strip() + '@'
 # Key to separate the table of interrupt data from the rest of the information
 # This is only needed because the interrupt data spans multiple lines
 KEY_INTERRUPT_TABLE = "table_interrupt_data"
 # Dictionary that maps a key to one or more commands
 # The keys aren't really necessary, but they help to explain the purpose of their corresponding commands
 INFO_COMMANDS = {
+	'date': "echo date=`date +\"%c\"`;",
 	'num_users': "echo num_users=`users | wc -w`;",
 	'processes_total': "echo processes_total=`ps -A --no-headers | wc -l`;",
 	'processes_num_running': "ps axo state | grep R | wc -l | awk '{print \"processes_num_running=\" $1}';",
@@ -99,6 +100,7 @@ def generateOutputFile(hostname, data, infoDir):
 			newLines.append(line)
 	# Write the sorted lines to the output file, then the table
 	with open(infoDir + "/" + hostname, "w") as hostInfoFile:
+		# Comment out the next line if dealing with a huge number of lines
 		newLines.sort()
 		for line in newLines:
 			hostInfoFile.write(line)
