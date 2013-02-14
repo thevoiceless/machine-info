@@ -15,12 +15,12 @@
 	<table class="table table-striped table-bordered">
 		<tbody>
 			<tr>
-				<td>Users Logged In</td>
+				<td class="title-cell">Users Logged In</td>
 				<td><%= info[:num_users] %></td>
 			</tr>
 
 			<tr>
-				<td>CPU Utilization</td>
+				<td class="title-cell">CPU Utilization</td>
 				<td><%= info[:cpu_utilization] %>
 			</tr>
 		</tbody>
@@ -31,19 +31,19 @@
 				<td colspan="2"><h5>Processor</h5></td>
 			</tr>
 			<tr>
-				<td>Name</td>
+				<td class="title-cell">Name</td>
 				<td><%= info[:processor_name] %></td>
 			</tr>
 			<tr>
-				<td>Speed</td>
+				<td class="title-cell">Speed</td>
 				<td><%= info[:processor_speed] %></td>
 			</tr>
 			<tr>
-				<td>Number of real cores</td>
+				<td class="title-cell">Number of real cores</td>
 				<td><%= info[:processor_num_real_cores] %></td>
 			</tr>
 			<tr>
-				<td>Number of virtual cores</td>
+				<td class="title-cell">Number of virtual cores</td>
 				<td><%= info[:processor_num_virt_cores] %></td>
 			</tr>
 		</tbody>
@@ -54,15 +54,15 @@
 				<td colspan="2"><h5>Load Averages</h5></td>
 			</tr>
 			<tr>
-				<td>Last 1 minute</td>
+				<td class="title-cell">Last 1 minute</td>
 				<td><%= info[:load_avg_01min] %></td>
 			</tr>
 			<tr>
-				<td>Last 5 minutes</td>
+				<td class="title-cell">Last 5 minutes</td>
 				<td><%= info[:load_avg_05min] %></td>
 			</tr>
 			<tr>
-				<td>Last 15 minutes</td>
+				<td class="title-cell">Last 15 minutes</td>
 				<td><%= info[:load_avg_15min] %></td>
 			</tr>
 		</tbody>
@@ -91,11 +91,11 @@
 				<td colspan="2"><h5>Memory</h5></td>
 			</tr>
 			<tr>
-				<td>Free</td>
+				<td class="title-cell">Free</td>
 				<td><%= info[:memory_free] %></td>
 			</tr>
 			<tr>
-				<td>Total</td>
+				<td class="title-cell">Total</td>
 				<td><%= info[:memory_total] %></td>
 			</tr>
 		</tbody>
@@ -106,19 +106,19 @@
 				<td colspan="2"><h5>Processes</h5></td>
 			</tr>
 			<tr>
-				<td>Running</td>
+				<td class="title-cell">Running</td>
 				<td><%= info[:processes_num_running] %></td>
 			</tr>
 			<tr>
-				<td>Sleeping</td>
+				<td class="title-cell">Sleeping</td>
 				<td><%= info[:processes_num_sleeping] %></td>
 			</tr>
 			<tr>
-				<td>Stopped</td>
+				<td class="title-cell">Stopped</td>
 				<td><%= info[:processes_num_stopped] %></td>
 			</tr>
 			<tr>
-				<td>Zombie</td>
+				<td class="title-cell">Zombie</td>
 				<td><%= info[:processes_num_zombie] %></td>
 			</tr>
 		</tbody>

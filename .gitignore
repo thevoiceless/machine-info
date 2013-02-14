@@ -1,1 +1,5 @@
-foo/*
+inputs/
+foo/
+bar/
+manyhosts.txt
+test.html
