@@ -113,6 +113,7 @@ end
 erb_html = ERB.new(File.open("results.html.erb").read)
 bootstrap_css_path = File.expand_path("bootstrap.min.css")
 index_css_path = File.expand_path("index.css")
+jquery_path = File.expand_path("jquery-1.9.1.min.js")
 if output_dir_path
 	File.open(output_dir_path.strip << "/index.html", "w") do |f|
 		f.write(erb_html.result(binding()))

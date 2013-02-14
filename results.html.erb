@@ -4,6 +4,7 @@
 	<title>Machine Information</title>
 	<link rel="stylesheet" type="text/css" href="<%= bootstrap_css_path %>">
 	<link rel="stylesheet" type="text/css" href="<%= index_css_path %>">
+	<script src="<%= jquery_path %>"></script>
 </head>
 <body>
 	<% all_info.each do |info| %>
@@ -21,7 +22,7 @@
 
 			<tr>
 				<td class="title-cell">CPU Utilization</td>
-				<td><%= info[:cpu_utilization] %>
+				<td><%= '%.2f' % (100.0 - info[:cpu_utilization_idle].to_f).to_s %>%</td>
 			</tr>
 		</tbody>
 	</table>
