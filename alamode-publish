@@ -16,6 +16,16 @@ def exit_if_dir_not_exist(path, args)
 	end
 end
 
+def determine_machine_rating(info)
+	info[:memory_used] = (info[:memory_total].to_i - info[:memory_free].to_i).to_s + " kB"
+	info[:memory_percent] = (info[:memory_used].to_f / info[:memory_total].to_f) * 100.0
+	info[:cpu_percent] = (100.0 - info[:cpu_utilization_idle].to_f)
+	info[:machine_rating] = ((0.7 * info[:memory_percent]) + (0.3 * info[:cpu_percent])).to_i
+	puts info[:memory_percent]
+	puts info[:cpu_percent]
+	puts info[:machine_rating]
+end
+
 # Parse and validate command-line arguments
 # Python's Argparse is far superior to Ruby's OptionParser, so this gets messy
 options = {}
@@ -107,6 +117,7 @@ for file in files
 			end
 		end
 	end
+	determine_machine_rating(machine_info) unless machine_info[:host_unreachable]
 	# Add this machine's info to the all_info array
 	all_info << machine_info
 end

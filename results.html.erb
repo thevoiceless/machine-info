@@ -10,7 +10,7 @@
 	<% all_info.each do |info| %>
 	<div class="well">
 	<div class="page-header">
-		<h1 <%= "class=\"text-error\"" if info[:host_unreachable] %>><%= info[:name] %> <% unless info[:host_unreachable] %><small>As of <%= info[:date] %></small><% end %></h1>
+		<h1 <%= "class=" << if info[:host_unreachable]; "\"muted\""; elsif info[:machine_rating] <= 50; "text-success"; elsif info[:machine_rating] <= 70; "text-warning"; else; "text-danger"; end %>><%= info[:name] %> <% unless info[:host_unreachable] %><small>As of <%= info[:date] %></small><% end %></h1>
 	</div>
 	<% unless info[:host_unreachable] %>
 	<table class="table table-striped table-bordered table-condensed">
@@ -24,7 +24,12 @@
 	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
-				<td colspan="2"><h5>CPU Utilization</h5></td>
+				<td><h5>CPU Utilization</h5></td>
+				<td class="vcenter">
+					<div class="progress">
+						<div class="bar <%= if info[:cpu_percent] <= 50; "bar-success"; elsif info[:cpu_percent] > 50; "bar-warning"; elsif info[:cpu_percent] > 85; "bar-danger"; end %>" style="width: <%= info[:cpu_percent] %>%;"></div>
+					</div>
+				</td>
 			</tr>
 			<tr>
 				<td class="title-cell">Total</td>
@@ -67,23 +72,20 @@
 	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
-				<td colspan="2"><h5>Processor</h5></td>
+				<td><h5>Memory</h5></td>
+				<td class="vcenter">
+					<div class="progress">
+						<div class="bar <%= if info[:memory_percent] > 65; "bar-warning"; elsif info[:memory_percent] > 85; "bar-danger"; end %>" style="width: <%= info[:memory_percent] %>%;"></div>
+					</div>
+				</td>
 			</tr>
 			<tr>
-				<td class="title-cell">Name</td>
-				<td><%= info[:processor_name] %></td>
+				<td class="title-cell">Used</td>
+				<td><%= info[:memory_used] %> (<%= '%.2f' % info[:memory_percent] %>%)</td>
 			</tr>
 			<tr>
-				<td class="title-cell">Speed</td>
-				<td><%= info[:processor_speed] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Number of real cores</td>
-				<td><%= info[:processor_num_real_cores] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Number of virtual cores</td>
-				<td><%= info[:processor_num_virt_cores] %></td>
+				<td class="title-cell">Total</td>
+				<td><%= info[:memory_total] %></td>
 			</tr>
 		</tbody>
 	</table>
@@ -103,39 +105,6 @@
 			<tr>
 				<td class="title-cell">Last 15 minutes</td>
 				<td><%= info[:load_avg_15min] %></td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-striped table-bordered table-condensed">
-		<tbody>
-			<tr>
-				<td colspan="3"><h5>Cache</h5></td>
-			</tr>
-			<% info[:num_cache_levels].times do |level| %>
-			<tr>
-				<td rowspan="2" class="section">Level <%= level + 1 %></td>
-				<td>Type</td>
-				<td><%= info["lvl#{level + 1}_cache_type".to_sym] %></td>
-			</tr>
-			<tr>
-				<td>Size</td>
-				<td><%= info["lvl#{level + 1}_cache_size".to_sym] %></td>
-			</tr>
-			<% end %>
-		</tbody>
-	</table>
-	<table class="table table-striped table-bordered table-condensed">
-		<tbody>
-			<tr>
-				<td colspan="2"><h5>Memory</h5></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Free</td>
-				<td><%= info[:memory_free] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Total</td>
-				<td><%= info[:memory_total] %></td>
 			</tr>
 		</tbody>
 	</table>
@@ -166,8 +135,49 @@
 			</tr>
 		</tbody>
 	</table>
+	<table class="table table-striped table-bordered table-condensed">
+		<tbody>
+			<tr>
+				<td colspan="2"><h5>Processor</h5></td>
+			</tr>
+			<tr>
+				<td class="title-cell">Name</td>
+				<td><%= info[:processor_name] %></td>
+			</tr>
+			<tr>
+				<td class="title-cell">Speed</td>
+				<td><%= info[:processor_speed] %></td>
+			</tr>
+			<tr>
+				<td class="title-cell">Number of real cores</td>
+				<td><%= info[:processor_num_real_cores] %></td>
+			</tr>
+			<tr>
+				<td class="title-cell">Number of virtual cores</td>
+				<td><%= info[:processor_num_virt_cores] %></td>
+			</tr>
+		</tbody>
+	</table>
+	<table class="table table-striped table-bordered table-condensed">
+		<tbody>
+			<tr>
+				<td colspan="3"><h5>Cache</h5></td>
+			</tr>
+			<% info[:num_cache_levels].times do |level| %>
+			<tr>
+				<td rowspan="2" class="section">Level <%= level + 1 %></td>
+				<td>Type</td>
+				<td><%= info["lvl#{level + 1}_cache_type".to_sym] %></td>
+			</tr>
+			<tr>
+				<td>Size</td>
+				<td><%= info["lvl#{level + 1}_cache_size".to_sym] %></td>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
 	<% else %>
-	<p>Host Unreachable</p>
+	<p>Host could not be reached</p>
 	<% end %>
 	</div>
 	<% end %>

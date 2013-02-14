@@ -12,11 +12,21 @@ td.title-cell {
 	width: 25%;
 }
 
-td.sub-cell {
-	text-align: right;
-}
-
 td.section {
 	text-align: center;
 	vertical-align: middle;
+}
+
+td.vcenter {
+	vertical-align: middle;
+}
+
+.progress {
+	margin: 0;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+}
+
+.bar {
+	margin: 0;
 }
