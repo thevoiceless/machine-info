@@ -43,8 +43,8 @@ import subprocess
 import os
 
 # SSH username
-# SSH_HOSTNAME_PREFIX = subprocess.Popen(['whoami'], stdout=subprocess.PIPE).communicate()[0].strip() + '@'
-SSH_HOSTNAME_PREFIX = "rimoses@"
+SSH_HOSTNAME_PREFIX = subprocess.Popen(['whoami'], stdout=subprocess.PIPE).communicate()[0].strip() + '@'
+# SSH_HOSTNAME_PREFIX = "rimoses@"
 # Key to separate the table of interrupt data from the rest of the information
 # This is only needed because the interrupt data spans multiple lines
 KEY_INTERRUPT_TABLE = "table_interrupt_data"
