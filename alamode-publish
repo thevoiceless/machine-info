@@ -77,15 +77,14 @@ if options.has_key?(:output_dir)
 end
 
 # Finally, the fun stuff
-puts "Reading file(s) from: #{input_dir_path}"
 # Get the list of files in the input directory
 files = Dir.glob(input_dir_path + "*")
 num_files = files.length
 # Go through each file
-all_info = {}
+all_info = []
+num_cache_levels = 0
 for file in files
-	puts file
-	machine_info = {}
+	machine_info = { :name => File.basename(file) }
 	reading_table = false
 	File.open(file, "r") do |f|
 		# Go through each line and split into (key, value) pairs
@@ -98,22 +97,21 @@ for file in files
 				machine_info[:table_interrupt_data] << line
 			# Split into two parts based on '='
 			else
+				num_cache_levels += 1 if line.strip.include?("cache_type")
 				words = line.split('=', 2)
 				words.map { |x| x.strip! }
 				machine_info[words.first.to_sym] = words.last
 			end
 		end
 	end
-	# Add this machine's info to the all_info hash
-	# Replace "-" with "_" when converting to symbol
-	all_info[File.basename(file.sub("-", "_")).to_sym] = machine_info
+
+	# Add this machine's info to the all_info array
+	all_info << machine_info
 end
-# puts all_info
 erb_html = ERB.new(File.open("results.html.erb").read)
 if output_dir_path
 	puts "Output to: #{output_dir_path}"
 else
-	puts "Output to: STDOUT"
 	puts erb_html.result(binding())
 end
 # puts options

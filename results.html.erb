@@ -4,9 +4,103 @@
 	<title>Machine Information</title>
 </head>
 <body>
-	<% all_info.each_pair do |key, value| %>
-		<p><%= key %>:</p>
-		<p><%= value %></p>
+	<% all_info.each do |info| %>
+		<h1><%= info[:name] %></h1>
+		<table>
+			<tbody>
+				<tr>
+					<td>Users Logged In</td>
+					<td><%= info[:num_users] %></td>
+				</tr>
+
+				<tr>
+					<td>CPU Utilization</td>
+					<td><%= info[:cpu_utilization] %>
+				</tr>
+
+				<tr>
+					<td colspan="2">Processor</td>
+				</tr>
+				<tr>
+					<td>Name</td>
+					<td><%= info[:processor_name] %></td>
+				</tr>
+				<tr>
+					<td>Speed</td>
+					<td><%= info[:processor_speed] %></td>
+				</tr>
+				<tr>
+					<td>Number of real cores</td>
+					<td><%= info[:processor_num_real_cores] %></td>
+				</tr>
+				<tr>
+					<td>Number of virtual cores</td>
+					<td><%= info[:processor_num_virt_cores] %></td>
+				</tr>
+
+				<tr>
+					<td colspan="2">Load Averages</td>
+				</tr>
+				<tr>
+					<td>Last 1 minute</td>
+					<td><%= info[:load_avg_01min] %></td>
+				</tr>
+				<tr>
+					<td>Last 5 minutes</td>
+					<td><%= info[:load_avg_05min] %></td>
+				</tr>
+				<tr>
+					<td>Last 15 minutes</td>
+					<td><%= info[:load_avg_15min] %></td>
+				</tr>
+
+				<tr>
+					<td colspan="2">Cache</td>
+				</tr>
+				<% num_cache_levels.times do |level| %>
+					<tr>
+						<td>Level <%= level + 1 %> type</td>
+						<td><%= info["lvl#{level + 1}_cache_type".to_sym] %></td>
+					</tr>
+					<tr>
+						<td>Level <%= level + 1 %> size</td>
+						<td><%= info["lvl#{level + 1}_cache_size".to_sym] %></td>
+					</tr>
+				<% end %>
+
+				<tr>
+					<td colspan="2">Memory</td>
+				</tr>
+				<tr>
+					<td>Free</td>
+					<td><%= info[:memory_free] %></td>
+				</tr>
+				<tr>
+					<td>Total</td>
+					<td><%= info[:memory_total] %></td>
+				</tr>
+
+				<tr>
+					<td colspan="2">Processes</td>
+				</tr>
+				<tr>
+					<td>Running</td>
+					<td><%= info[:processes_num_running] %></td>
+				</tr>
+				<tr>
+					<td>Sleeping</td>
+					<td><%= info[:processes_num_sleeping] %></td>
+				</tr>
+				<tr>
+					<td>Stopped</td>
+					<td><%= info[:processes_num_stopped] %></td>
+				</tr>
+				<tr>
+					<td>Zombie</td>
+					<td><%= info[:processes_num_zombie] %></td>
+				</tr>
+			</tbody>
+		</table>
 	<% end %>
 </body>
 </html>
