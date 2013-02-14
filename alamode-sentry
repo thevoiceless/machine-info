@@ -104,6 +104,8 @@ def generateOutputFile(hostname, data, infoDir):
 		newLines.sort()
 		for line in newLines:
 			hostInfoFile.write(line)
+			if line.strip() == "host_unreachable":
+				return
 		hostInfoFile.write("{}\n".format(KEY_INTERRUPT_TABLE))
 		hostInfoFile.write(interruptsTable)
 
@@ -122,7 +124,9 @@ def getInfo(hostname, infoDir):
 		generateOutputFile(hostname, data, infoDir)
 	# Otherwise, exit with the return code from SSH
 	else:
-		exit(dataProcess.returncode)
+		generateOutputFile(hostname, "host_unreachable", infoDir)
+		# print os.path.realpath(infoDir)
+		# exit(dataProcess.returncode)
 
 # Command-line arguments
 parser = argparse.ArgumentParser()

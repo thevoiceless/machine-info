@@ -75,20 +75,23 @@ if options.has_key?(:output_dir)
 	end
 	output_dir_path = options[:output_dir]
 end
-
 # Get the list of files in the input directory
+input_dir_path.strip!
 input_dir_path << '/' unless input_dir_path[-1, 1] == '/'
 files = Dir.glob(input_dir_path + "*")
 num_files = files.length
 # Go through each file
 all_info = []
-num_cache_levels = 0
 for file in files
-	machine_info = { :name => File.basename(file) }
+	machine_info = { :name => File.basename(file), :num_cache_levels => 0 }
 	reading_table = false
 	File.open(file, "r") do |f|
 		# Go through each line and split into (key, value) pairs
 		f.each_line do |line|
+			if line.strip == "host_unreachable"
+				machine_info[:host_unreachable] = true
+				break
+			end
 			# The whole interrupts table is one big value
 			if line.strip == "table_interrupt_data"
 				reading_table = true
@@ -97,7 +100,7 @@ for file in files
 				machine_info[:table_interrupt_data] << line
 			# Split into two parts based on '='
 			else
-				num_cache_levels += 1 if line.strip.include?("cache_type")
+				machine_info[:num_cache_levels] += 1 if line.strip.include?("cache_type")
 				words = line.split('=', 2)
 				words.map { |x| x.strip! }
 				machine_info[words.first.to_sym] = words.last
@@ -108,13 +111,13 @@ for file in files
 	all_info << machine_info
 end
 erb_html = ERB.new(File.open("results.html.erb").read)
-bootstrap_css_path = File.absolute_path("bootstrap.min.css")
-index_css_path = File.absolute_path("index.css")
+bootstrap_css_path = File.expand_path("bootstrap.min.css")
+index_css_path = File.expand_path("index.css")
 if output_dir_path
-	puts "Output to: #{output_dir_path}"
 	File.open(output_dir_path.strip << "/index.html", "w") do |f|
 		f.write(erb_html.result(binding()))
 	end
+	puts "Output saved to: #{File.expand_path(output_dir_path.strip << "/index.html")}"
 else
 	puts erb_html.result(binding())
 end

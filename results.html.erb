@@ -9,8 +9,9 @@
 	<% all_info.each do |info| %>
 	<div class="well">
 	<div class="page-header">
-		<h1><%= info[:name] %> <small>As of <%= info[:date] %></small></h1>
+		<h1><%= info[:name] %> <% unless info[:host_unreachable] %><small>As of <%= info[:date] %></small><% end %></h1>
 	</div>
+	<% unless info[:host_unreachable] %>
 	<table class="table table-striped table-bordered">
 		<tbody>
 			<tr>
@@ -71,7 +72,7 @@
 			<tr>
 				<td colspan="3"><h5>Cache</h5></td>
 			</tr>
-			<% num_cache_levels.times do |level| %>
+			<% info[:num_cache_levels].times do |level| %>
 			<tr>
 				<td rowspan="2" class="section">Level <%= level + 1 %></td>
 				<td>Type</td>
@@ -122,6 +123,9 @@
 			</tr>
 		</tbody>
 	</table>
+	<% else %>
+	<p>Host Unreachable</p>
+	<% end %>
 	</div>
 	<% end %>
 </body>
