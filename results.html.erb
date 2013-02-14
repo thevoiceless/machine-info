@@ -10,23 +10,61 @@
 	<% all_info.each do |info| %>
 	<div class="well">
 	<div class="page-header">
-		<h1><%= info[:name] %> <% unless info[:host_unreachable] %><small>As of <%= info[:date] %></small><% end %></h1>
+		<h1 <%= "class=\"text-error\"" if info[:host_unreachable] %>><%= info[:name] %> <% unless info[:host_unreachable] %><small>As of <%= info[:date] %></small><% end %></h1>
 	</div>
 	<% unless info[:host_unreachable] %>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
 				<td class="title-cell">Users Logged In</td>
 				<td><%= info[:num_users] %></td>
 			</tr>
-
+		</tbody>
+	</table>
+	<table class="table table-striped table-bordered table-condensed">
+		<tbody>
 			<tr>
-				<td class="title-cell">CPU Utilization</td>
+				<td colspan="2"><h5>CPU Utilization</h5></td>
+			</tr>
+			<tr>
+				<td class="title-cell">Total</td>
 				<td><%= '%.2f' % (100.0 - info[:cpu_utilization_idle].to_f).to_s %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">User</td>
+				<td><%= '%.2f' % info[:cpu_utilization_user] %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">System</td>
+				<td><%= '%.2f' % info[:cpu_utilization_system] %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">System</td>
+				<td><%= '%.2f' % info[:cpu_utilization_system] %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">Nice</td>
+				<td><%= '%.2f' % info[:cpu_utilization_ni] %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">I/O Wait</td>
+				<td><%= '%.2f' % info[:cpu_utilization_wa] %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">Hardware Interrupts</td>
+				<td><%= '%.2f' % info[:cpu_utilization_hi] %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">Software Interrupts</td>
+				<td><%= '%.2f' % info[:cpu_utilization_si] %>%</td>
+			</tr>
+			<tr>
+				<td class="title-cell">Steal Time</td>
+				<td><%= '%.2f' % info[:cpu_utilization_st] %>%</td>
 			</tr>
 		</tbody>
 	</table>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
 				<td colspan="2"><h5>Processor</h5></td>
@@ -49,7 +87,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
 				<td colspan="2"><h5>Load Averages</h5></td>
@@ -68,7 +106,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
 				<td colspan="3"><h5>Cache</h5></td>
@@ -86,7 +124,7 @@
 			<% end %>
 		</tbody>
 	</table>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
 				<td colspan="2"><h5>Memory</h5></td>
@@ -101,10 +139,14 @@
 			</tr>
 		</tbody>
 	</table>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered table-condensed">
 		<tbody>
 			<tr>
 				<td colspan="2"><h5>Processes</h5></td>
+			</tr>
+			<tr>
+				<td class="title-cell">Total</td>
+				<td><%= info[:processes_total] %></td>
 			</tr>
 			<tr>
 				<td class="title-cell">Running</td>
