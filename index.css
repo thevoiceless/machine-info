@@ -1,3 +1,7 @@
+.hidden {
+	display: none;
+}
+
 .well {
 	margin: 1em;
 }
@@ -29,4 +33,8 @@ td.vcenter {
 
 .bar {
 	margin: 0;
+}
+
+tr {
+	background-color: white;
 }

@@ -21,9 +21,6 @@ def determine_machine_rating(info)
 	info[:memory_percent] = (info[:memory_used].to_f / info[:memory_total].to_f) * 100.0
 	info[:cpu_percent] = (100.0 - info[:cpu_utilization_idle].to_f)
 	info[:machine_rating] = ((0.7 * info[:memory_percent]) + (0.3 * info[:cpu_percent])).to_i
-	puts info[:memory_percent]
-	puts info[:cpu_percent]
-	puts info[:machine_rating]
 end
 
 # Parse and validate command-line arguments
@@ -121,10 +118,13 @@ for file in files
 	# Add this machine's info to the all_info array
 	all_info << machine_info
 end
+# Generate HTML
 erb_html = ERB.new(File.open("results.html.erb").read)
 bootstrap_css_path = File.expand_path("bootstrap.min.css")
+bootstrap_js_path = File.expand_path("bootstrap.min.js")
 index_css_path = File.expand_path("index.css")
 jquery_path = File.expand_path("jquery-1.9.1.min.js")
+js_path = File.expand_path("index.js")
 if output_dir_path
 	File.open(output_dir_path.strip << "/index.html", "w") do |f|
 		f.write(erb_html.result(binding()))
