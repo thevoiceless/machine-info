@@ -38,3 +38,19 @@ td.vcenter {
 tr {
 	background-color: white;
 }
+
+tr#running-row > td {
+	color: rgb(70, 136, 71);
+}
+
+tr#sleeping-row > td{
+	color: rgb(58, 135, 173);
+}
+
+tr#stopped-row > td {
+	color: rgb(192, 152, 83);
+}
+
+tr#zombie-row > td {
+	color: rgb(185, 74, 72);
+}

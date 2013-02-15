@@ -112,26 +112,34 @@
 	</table>
 	<table class="table table-bordered table-condensed">
 		<tbody>
-			<tr>
-				<td colspan="2"><h5>Processes</h5></td>
+			<tr id="proc-row">
+				<td class="title-cell"><h5>Processes</h5></td>
+				<td class="vcenter">
+					<div class="progress">
+						<div id="running-procs-bar" class="bar bar-success" style="width: <%= (info[:processes_num_running].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
+						<div id="sleeping-procs-bar" class="bar bar-info" style="width: <%= (info[:processes_num_sleeping].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
+						<div id="stopped-procs-bar" class="bar bar-warning" style="width: <%= (info[:processes_num_stopped].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
+						<div id="zombie-procs-bar" class="bar bar-danger" style="width: <%= 100.0 - (((info[:processes_num_running].to_f * 100.0) / info[:processes_total].to_f) + ((info[:processes_num_sleeping].to_f * 100.0) / info[:processes_total].to_f) + ((info[:processes_num_stopped].to_f * 100.0) / info[:processes_total].to_f)) %>%;"></div>
+					</div>
+				</td>
 			</tr>
-			<tr>
+			<tr class="hidden proc">
 				<td class="title-cell">Total</td>
 				<td><%= info[:processes_total] %></td>
 			</tr>
-			<tr>
+			<tr id="running-row" class="hidden proc">
 				<td class="title-cell">Running</td>
 				<td><%= info[:processes_num_running] %></td>
 			</tr>
-			<tr>
+			<tr id="sleeping-row" class="hidden proc">
 				<td class="title-cell">Sleeping</td>
 				<td><%= info[:processes_num_sleeping] %></td>
 			</tr>
-			<tr>
+			<tr id="stopped-row" class="hidden proc">
 				<td class="title-cell">Stopped</td>
 				<td><%= info[:processes_num_stopped] %></td>
 			</tr>
-			<tr>
+			<tr id="zombie-row" class="hidden proc">
 				<td class="title-cell">Zombie</td>
 				<td><%= info[:processes_num_zombie] %></td>
 			</tr>
