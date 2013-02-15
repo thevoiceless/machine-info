@@ -1,14 +1,25 @@
 #!/usr/bin/env ruby
 
+# This script accepts a directory path from either STDIN or as a command-line
+# parameter (one or the other is required). It then iterates through every
+# file in that directory, each of which contains information about a certain
+# machine. The information is parsed and stored in a hash, which is then used
+# in conjunction with embedded Ruby (ERB) and JavaScript/CSS to generate an
+# HTML page displaying the information. The HTML file is saved either in a
+# user-specified location, or a temporary directory created by the OS.
+
 require 'optparse'
 require 'fcntl'
 require 'erb'
 
+# Exit and display the usage message
 def exit_display_usage(opts)
 	puts opts
 	exit 1
 end
 
+# Exit if the given directory does not exist
+# Used for checking if the input directory is valid
 def exit_if_dir_not_exist(path, args)
 	if not File.directory?(path.chomp)
 		puts "The given input directory does not exist.\n\n"
@@ -16,6 +27,7 @@ def exit_if_dir_not_exist(path, args)
 	end
 end
 
+# Calculate and store some useful information, to reduce computation in ERB
 def determine_machine_rating(info)
 	info[:memory_used] = (info[:memory_total].to_i - info[:memory_free].to_i).to_s + " kB"
 	info[:memory_percent] = (info[:memory_used].to_f / info[:memory_total].to_f) * 100.0
@@ -24,7 +36,7 @@ def determine_machine_rating(info)
 end
 
 # Parse and validate command-line arguments
-# Python's Argparse is far superior to Ruby's OptionParser, so this gets messy
+# Ruby's OptionParser is a bit lacking, so this gets messy
 options = {}
 args = OptionParser.new do |opts|
 	opts.banner = "Usage: alamode-publish (-s DIRECTORY | Pipe from STDIN) [-d DIRECTORY]"
@@ -44,6 +56,7 @@ args = OptionParser.new do |opts|
 end
 args.parse!
 
+# Check edge cases
 # Because OptionParser has no built-in way to specify mutually exclusive groups, it has to be done manually
 # Set flag if piping from STDIN
 options[:input_from_pipe] = (STDIN.fcntl(Fcntl::F_GETFL, 0) == 0)
@@ -53,7 +66,7 @@ if options[:input_from_pipe]
 	if options[:input_dir]
 		exit_display_usage(args)
 	end
-	# Verify that the path is valid
+	# Verify that the given directory exists
 	input_dir_path = STDIN.gets
 	exit_if_dir_not_exist(input_dir_path, args)
 # Must specify input directory if not reading from STDIN
@@ -61,17 +74,17 @@ elsif options[:input_dir]
 	input_dir_path = options[:input_dir]
 	# Directory must exist
 	exit_if_dir_not_exist(input_dir_path, args)
-# The user did not specify an input path
+# The user did not specify an input directory
 else
 	exit_display_usage(args)
 end
 
 # Check if output directory was given
 if options.has_key?(:output_dir)
-	# Flag "-d" was given with no argument
+	# Flag "-d" given with no argument results in a nil value
 	if options[:output_dir].nil?
 		exit_display_usage(args)
-	# Try to create directory if it doesn't already exist
+	# Try to create the directory if it doesn't already exist
 	else
 		begin
 			Dir.mkdir(options[:output_dir]) if not File.directory?(options[:output_dir])
@@ -80,6 +93,7 @@ if options.has_key?(:output_dir)
 			exit 1
 		end
 	end
+	# Set the output directory
 	output_dir_path = options[:output_dir]
 end
 
@@ -89,25 +103,28 @@ input_dir_path << '/' unless input_dir_path[-1, 1] == '/'
 files = Dir.glob(input_dir_path + "*")
 num_files = files.length
 
-# Go through each file
+# Go through each file in the directory
 all_info = []
 for file in files
+	# Store the name of the host based on the filename, and the default number of cache levels
 	machine_info = { :name => File.basename(file), :num_cache_levels => 0 }
+	# The interrupts table is special
 	reading_table = false
 	File.open(file, "r") do |f|
 		# Go through each line and split into (key, value) pairs
 		f.each_line do |line|
+			# If the host could not be reached, there will only be one line in the file
 			if line.strip == "host_unreachable"
 				machine_info[:host_unreachable] = true
 				break
 			end
-			# The whole interrupts table is one big value
+			# The whole interrupts table is one big value, and is always at the end of the file
 			if line.strip == "table_interrupt_data"
 				reading_table = true
 				machine_info[:table_interrupt_data] = ""
 			elsif reading_table
 				machine_info[:table_interrupt_data] << line
-			# Split into two parts based on '='
+			# Split the line into two parts based on '='
 			else
 				machine_info[:num_cache_levels] += 1 if line.strip.include?("cache_type")
 				words = line.split('=', 2)
@@ -133,7 +150,7 @@ bootstrap_js_path = File.expand_path("bootstrap.min.js")
 index_css_path = File.expand_path("index.css")
 jquery_path = File.expand_path("jquery-1.9.1.min.js")
 js_path = File.expand_path("index.js")
-# Save in a directory as "index.html"
+# Save in the output directory as "index.html"
 if output_dir_path
 	File.open(output_dir_path.strip << "/index.html", "w") do |f|
 		f.write(erb_html.result(binding()))
