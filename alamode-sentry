@@ -126,8 +126,6 @@ def getInfo(hostname, infoDir):
 	# Otherwise, exit with the return code from SSH
 	else:
 		generateOutputFile(hostname, "host_unreachable", infoDir)
-		# print os.path.realpath(infoDir)
-		# exit(dataProcess.returncode)
 
 # Command-line arguments
 parser = argparse.ArgumentParser()

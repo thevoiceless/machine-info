@@ -82,11 +82,13 @@ if options.has_key?(:output_dir)
 	end
 	output_dir_path = options[:output_dir]
 end
+
 # Get the list of files in the input directory
 input_dir_path.strip!
 input_dir_path << '/' unless input_dir_path[-1, 1] == '/'
 files = Dir.glob(input_dir_path + "*")
 num_files = files.length
+
 # Go through each file
 all_info = []
 for file in files
@@ -114,22 +116,30 @@ for file in files
 			end
 		end
 	end
+	# Calculate some values that will be plugged into the HTML
 	determine_machine_rating(machine_info) unless machine_info[:host_unreachable]
 	# Add this machine's info to the all_info array
 	all_info << machine_info
 end
-# Generate HTML
+
+# Generate the HTML via embedded Ruby (ERB)
+# Load the template
 erb_html = ERB.new(File.open("results.html.erb").read)
+# Determine the paths to resources
+# The absolute path is used, rather than the relative path from the HTML file
+# This is because the user can specify where to save the HTML
 bootstrap_css_path = File.expand_path("bootstrap.min.css")
 bootstrap_js_path = File.expand_path("bootstrap.min.js")
 index_css_path = File.expand_path("index.css")
 jquery_path = File.expand_path("jquery-1.9.1.min.js")
 js_path = File.expand_path("index.js")
+# Save in a directory as "index.html"
 if output_dir_path
 	File.open(output_dir_path.strip << "/index.html", "w") do |f|
 		f.write(erb_html.result(binding()))
 	end
 	puts "Output saved to: #{File.expand_path(output_dir_path.strip << "/index.html")}"
+# Otherwise, pipe the HTML to STDOUT
 else
 	puts erb_html.result(binding())
 end
