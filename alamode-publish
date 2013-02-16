@@ -107,7 +107,7 @@ num_files = files.length
 all_info = []
 for file in files
 	# Store the name of the host based on the filename, and the default number of cache levels
-	machine_info = { :name => File.basename(file), :num_cache_levels => 0 }
+	machine_info = { :name => File.basename(file), :num_cache_levels => 0, :table_interrupt_data_cols => 0 }
 	# The interrupts table is special
 	reading_table = false
 	File.open(file, "r") do |f|
@@ -123,6 +123,8 @@ for file in files
 				reading_table = true
 				machine_info[:table_interrupt_data] = ""
 			elsif reading_table
+				split_line = line.split(",")
+				machine_info[:table_interrupt_data_cols] = split_line.size if split_line.size > machine_info[:table_interrupt_data_cols]
 				machine_info[:table_interrupt_data] << line
 			# Split the line into two parts based on '='
 			else

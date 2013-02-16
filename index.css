@@ -55,6 +55,7 @@ tr#zombie-row > td {
 	color: rgb(185, 74, 72);
 }
 
-.highlight-gray {
-	background-color: #EDEDED;
+.highlight-rows:hover {
+	/*background-color: #EDEDED;*/
+	background-color: #C7C9FF;
 }
