@@ -56,6 +56,5 @@ tr#zombie-row > td {
 }
 
 .highlight-rows:hover {
-	/*background-color: #EDEDED;*/
 	background-color: #C7C9FF;
 }
