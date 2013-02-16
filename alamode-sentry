@@ -41,6 +41,7 @@
 import argparse
 import subprocess
 import os
+import re
 
 # SSH username
 SSH_HOSTNAME_PREFIX = subprocess.Popen(['whoami'], stdout=subprocess.PIPE).communicate()[0].strip() + '@'
@@ -71,6 +72,15 @@ INFO_COMMANDS = {
 	'memory_total': "cat /proc/meminfo | grep MemTotal | awk '{print \"memory_total=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'table_interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
+
+def formatInterruptsTable(table):
+	rows = table.splitlines(True)
+	newTable = re.sub("\s+", ',', rows[0]) + "\n"
+	tableCols = len(rows[0].split()) + 2
+	numSplits = tableCols - 1
+	for row in rows[1:]:
+		newTable += ",".join(row.split(None, numSplits))
+	return newTable
 
 # Verify that the directory exists, otherwise create it
 def verifyInfoDir(infoDir):
@@ -108,7 +118,7 @@ def generateOutputFile(hostname, data, infoDir):
 			if line.strip() == "host_unreachable":
 				return
 		hostInfoFile.write("{}\n".format(KEY_INTERRUPT_TABLE))
-		hostInfoFile.write(interruptsTable)
+		hostInfoFile.write(formatInterruptsTable(interruptsTable))
 
 # Get info about the given host
 def getInfo(hostname, infoDir):
