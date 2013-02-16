@@ -73,13 +73,23 @@ INFO_COMMANDS = {
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'table_interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
 
+# Separate the columns of the interrupts table with commas for easier parsing later on
+# Number of commas = Number of columns - 1
 def formatInterruptsTable(table):
+	# Get the rows
 	rows = table.splitlines(True)
+	# The first row is special because it doesn't have a header for every column
 	newTable = re.sub("\s+", ',', rows[0]) + "\n"
+	# Number of columns in the table = Number of text columns in the first row + 2
 	tableCols = len(rows[0].split()) + 2
+	# Perform (columns - 1) splits
 	numSplits = tableCols - 1
+	# Iterate over the rest of the rows
 	for row in rows[1:]:
-		newTable += ",".join(row.split(None, numSplits))
+		splitRow = row.split(None, numSplits)
+		if len(splitRow) < tableCols:
+			splitRow[-1] += '\n'
+		newTable += ",".join(splitRow)
 	return newTable
 
 # Verify that the directory exists, otherwise create it

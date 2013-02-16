@@ -51,4 +51,14 @@ $(document).ready(function() {
 					$(this).fadeToggle()
 				})
 		});
+
+	$(".highlight-rows").hover(
+		function() {
+			$(this).find("td:not(.no-highlight)").addClass('highlight-gray')
+			// $(this).css('background-color', '#EDEDED')
+		},
+		function() {
+			$(this).find("td:not(.no-highlight)").removeClass('highlight-gray')
+			// $(this).css('background-color', 'white')
+		});
 });

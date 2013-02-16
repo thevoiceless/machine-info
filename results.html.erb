@@ -186,6 +186,19 @@
 			<% end %>
 		</tbody>
 	</table>
+	<table class="table table-bordered table-condensed">
+	<% max_num_cols = 0; info[:table_interrupt_data].each_line do |line| %>
+		<tr class="highlight-rows">
+		<% cols = line.split(","); max_num_cols = cols.size if cols.size > max_num_cols %>
+		<% cols.each_with_index do |item, index| %>
+		<td><%= item %></td>
+		<% if cols.first == "ERR:" and index == 1 %>
+			<td colspan="<%= max_num_cols - 2 %>" rowspan="2" class="no-highlight"></td>
+		<% end %>
+		<% end %>
+		</tr>
+	<% end %>
+	</table>
 	<% else %>
 	<p>Host could not be reached</p>
 	<% end %>

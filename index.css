@@ -54,3 +54,7 @@ tr#stopped-row > td {
 tr#zombie-row > td {
 	color: rgb(185, 74, 72);
 }
+
+.highlight-gray {
+	background-color: #EDEDED;
+}
