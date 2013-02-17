@@ -123,8 +123,6 @@ for file in files
 				reading_table = true
 				machine_info[:table_interrupt_data] = ""
 			elsif reading_table
-				split_line = line.split(",")
-				machine_info[:table_interrupt_data_cols] = split_line.size if split_line.size > machine_info[:table_interrupt_data_cols]
 				machine_info[:table_interrupt_data] << line
 			# Split the line into two parts based on '='
 			else
@@ -135,8 +133,11 @@ for file in files
 			end
 		end
 	end
-	# Calculate some values that will be plugged into the HTML
-	determine_machine_rating(machine_info) unless machine_info[:host_unreachable]
+	unless machine_info[:host_unreachable]
+		# Calculate some values that will be plugged into the HTML
+		machine_info[:table_interrupt_data_cols] = machine_info[:table_interrupt_data].split.map {|col| col.split(",").length}.max
+		determine_machine_rating(machine_info) unless machine_info[:host_unreachable]
+	end
 	# Add this machine's info to the all_info array
 	all_info << machine_info
 end
