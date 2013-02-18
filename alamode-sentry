@@ -66,7 +66,7 @@ INFO_COMMANDS = {
 	# Parsing commands are chained using '&&' to ensure that they are only run after $cpu has been assigned a value
 	'cpu_utilization': "cpu=$(top -b -n 1 | grep ^Cpu | sed s/^.*:\ *//); echo cpu_utilization=$cpu && echo cpu_utilization_user=`echo $cpu | awk '{print $1}' | sed s/\%.*//` && echo cpu_utilization_system=`echo $cpu | awk '{print $2}' | sed s/\%.*//` && echo cpu_utilization_idle=`echo $cpu | awk '{print $4}' | sed s/\%.*//` && echo cpu_utilization_ni=`echo $cpu | awk '{print $3}' | sed s/\%.*//` && echo cpu_utilization_wa=`echo $cpu | awk '{print $5}' | sed s/\%.*//` && echo cpu_utilization_hi=`echo $cpu | awk '{print $6}' | sed s/\%.*//` && echo cpu_utilization_si=`echo $cpu | awk '{print $7}' | sed s/\%.*//` && echo cpu_utilization_st=`echo $cpu | awk '{print $8}' | sed s/\%.*//`;",
 	'cache_levels': "echo cache_levels=`getconf -a | grep -i cache | awk '{ if ($2 != \"0\") print $1 }' | awk -F \"_\" '{ print $1 }' | uniq | wc -l`;",
-	'cache_info': "getconf -a | grep -i cache | awk '{ if ($2 != \"0\") print $1 \"=\" $2 }';",
+	'cache_info': "getconf -a | grep -i cache | awk '{ if ($2 != \"0\") print $1 \"=\" $2 }' | egrep -v \"LINESIZE|ASSOC\";",
 	'memory_total': "cat /proc/meminfo | grep MemTotal | awk '{print \"memory_total=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'table_interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }

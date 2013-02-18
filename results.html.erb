@@ -173,16 +173,43 @@
 			<tr>
 				<td colspan="3"><h5>Cache</h5></td>
 			</tr>
-			<% info[:num_cache_levels].times do |level| %>
+			<% info[:cache_levels].to_i.times do |level| %>
+
+			<% unless info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].nil? %>
 			<tr>
 				<td rowspan="2" class="section">Level <%= level + 1 %></td>
 				<td>Type</td>
-				<td><%= info["lvl#{level + 1}_cache_type".to_sym] %></td>
+				<td>Data</td>
 			</tr>
 			<tr>
 				<td>Size</td>
-				<td><%= info["lvl#{level + 1}_cache_size".to_sym] %></td>
+				<td><%= info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
 			</tr>
+			<% end %>
+
+			<% unless info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].nil? %>
+			<tr>
+				<td rowspan="2" class="section">Level <%= level + 1 %></td>
+				<td>Type</td>
+				<td>Instruction</td>
+			</tr>
+			<tr>
+				<td>Size</td>
+				<td><%= info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
+			</tr>
+			<% end %>
+
+			<% unless info["LEVEL#{level + 1}_CACHE_SIZE".to_sym].nil? %>
+			<tr>
+				<td rowspan="2" class="section">Level <%= level + 1 %></td>
+				<td>Type</td>
+				<td>Instruction</td>
+			</tr>
+			<tr>
+				<td>Size</td>
+				<td><%= info["LEVEL#{level + 1}_CACHE_SIZE".to_sym].to_i / 1024 %> kB </td>
+			</tr>
+			<% end %>
 			<% end %>
 		</tbody>
 	</table>
