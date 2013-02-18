@@ -14,226 +14,228 @@
 	<div class="page-header">
 		<h1 <%= "class=" << if info[:host_unreachable]; "\"muted\""; elsif info[:machine_rating] <= 50; "text-success"; elsif info[:machine_rating] <= 70; "text-warning"; else; "text-danger"; end %>><%= info[:name] %> <% unless info[:host_unreachable] %><small>As of <%= info[:date] %></small><% end %></h1>
 	</div>
-	<% unless info[:host_unreachable] %>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr>
-				<td class="title-cell"><h5>Users Logged In</h5></td>
-				<td class="vcenter"><%= info[:num_users] %></td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr class="title" id="cpu-row">
-				<td class="title-cell"><h5>CPU Utilization</h5></td>
-				<td class="vcenter">
-					<div class="progress">
-						<div class="bar <%= if info[:cpu_percent] <= 50; "bar-success"; elsif info[:cpu_percent] > 50; "bar-warning"; elsif info[:cpu_percent] > 85; "bar-danger"; end %>" style="width: <%= info[:cpu_percent] %>%;"></div>
-					</div>
-				</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">Total</td>
-				<td><%= '%.2f' % (100.0 - info[:cpu_utilization_idle].to_f).to_s %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">User</td>
-				<td><%= '%.2f' % info[:cpu_utilization_user] %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">System</td>
-				<td><%= '%.2f' % info[:cpu_utilization_system] %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">System</td>
-				<td><%= '%.2f' % info[:cpu_utilization_system] %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">Nice</td>
-				<td><%= '%.2f' % info[:cpu_utilization_ni] %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">I/O Wait</td>
-				<td><%= '%.2f' % info[:cpu_utilization_wa] %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">Hardware Interrupts</td>
-				<td><%= '%.2f' % info[:cpu_utilization_hi] %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">Software Interrupts</td>
-				<td><%= '%.2f' % info[:cpu_utilization_si] %>%</td>
-			</tr>
-			<tr class="hidden cpu">
-				<td class="title-cell">Steal Time</td>
-				<td><%= '%.2f' % info[:cpu_utilization_st] %>%</td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr id="mem-row">
-				<td class="title-cell"><h5>Memory</h5></td>
-				<td class="vcenter">
-					<div class="progress">
-						<div class="bar <%= if info[:memory_percent] > 65; "bar-warning"; elsif info[:memory_percent] > 85; "bar-danger"; end %>" style="width: <%= info[:memory_percent] %>%;"></div>
-					</div>
-				</td>
-			</tr>
-			<tr class="hidden mem">
-				<td class="title-cell">Used</td>
-				<td><%= info[:memory_used] %> (<%= '%.2f' % info[:memory_percent] %>%)</td>
-			</tr>
-			<tr class="hidden mem">
-				<td class="title-cell">Total</td>
-				<td><%= info[:memory_total] %></td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr>
-				<td colspan="2"><h5>Load Averages</h5></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Last 1 minute</td>
-				<td><%= info[:load_avg_01min] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Last 5 minutes</td>
-				<td><%= info[:load_avg_05min] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Last 15 minutes</td>
-				<td><%= info[:load_avg_15min] %></td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr id="proc-row">
-				<td class="title-cell"><h5>Processes</h5></td>
-				<td class="vcenter">
-					<div class="progress">
-						<div id="running-procs-bar" class="bar bar-success" style="width: <%= (info[:processes_num_running].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
-						<div id="sleeping-procs-bar" class="bar bar-info" style="width: <%= (info[:processes_num_sleeping].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
-						<div id="stopped-procs-bar" class="bar bar-warning" style="width: <%= (info[:processes_num_stopped].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
-						<div id="zombie-procs-bar" class="bar bar-danger" style="width: <%= 100.0 - (((info[:processes_num_running].to_f * 100.0) / info[:processes_total].to_f) + ((info[:processes_num_sleeping].to_f * 100.0) / info[:processes_total].to_f) + ((info[:processes_num_stopped].to_f * 100.0) / info[:processes_total].to_f)) %>%;"></div>
-					</div>
-				</td>
-			</tr>
-			<tr class="hidden proc">
-				<td class="title-cell">Total</td>
-				<td><%= info[:processes_total] %></td>
-			</tr>
-			<tr id="running-row" class="hidden proc">
-				<td class="title-cell">Running</td>
-				<td><%= info[:processes_num_running] %></td>
-			</tr>
-			<tr id="sleeping-row" class="hidden proc">
-				<td class="title-cell">Sleeping</td>
-				<td><%= info[:processes_num_sleeping] %></td>
-			</tr>
-			<tr id="stopped-row" class="hidden proc">
-				<td class="title-cell">Stopped</td>
-				<td><%= info[:processes_num_stopped] %></td>
-			</tr>
-			<tr id="zombie-row" class="hidden proc">
-				<td class="title-cell">Zombie</td>
-				<td><%= info[:processes_num_zombie] %></td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr>
-				<td colspan="2"><h5>Processor</h5></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Name</td>
-				<td><%= info[:processor_name] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Speed</td>
-				<td><%= info[:processor_speed] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Number of real cores</td>
-				<td><%= info[:processor_num_real_cores] %></td>
-			</tr>
-			<tr>
-				<td class="title-cell">Number of virtual cores</td>
-				<td><%= info[:processor_num_virt_cores] %></td>
-			</tr>
-		</tbody>
-	</table>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr>
-				<td colspan="3"><h5>Cache</h5></td>
-			</tr>
-			<% info[:cache_levels].to_i.times do |level| %>
+	<div class="hidden machine-info">
+		<% unless info[:host_unreachable] %>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td class="title-cell"><h5>Users Logged In</h5></td>
+					<td class="vcenter"><%= info[:num_users] %></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer" id="cpu-row">
+					<td class="title-cell"><h5>CPU Utilization</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar <%= if info[:cpu_percent] <= 50; "bar-success"; elsif info[:cpu_percent] > 50; "bar-warning"; elsif info[:cpu_percent] > 85; "bar-danger"; end %>" style="width: <%= info[:cpu_percent] %>%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Total</td>
+					<td><%= '%.2f' % (100.0 - info[:cpu_utilization_idle].to_f).to_s %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">User</td>
+					<td><%= '%.2f' % info[:cpu_utilization_user] %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">System</td>
+					<td><%= '%.2f' % info[:cpu_utilization_system] %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">System</td>
+					<td><%= '%.2f' % info[:cpu_utilization_system] %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Nice</td>
+					<td><%= '%.2f' % info[:cpu_utilization_ni] %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">I/O Wait</td>
+					<td><%= '%.2f' % info[:cpu_utilization_wa] %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Hardware Interrupts</td>
+					<td><%= '%.2f' % info[:cpu_utilization_hi] %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Software Interrupts</td>
+					<td><%= '%.2f' % info[:cpu_utilization_si] %>%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Steal Time</td>
+					<td><%= '%.2f' % info[:cpu_utilization_st] %>%</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer" id="mem-row">
+					<td class="title-cell"><h5>Memory</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar <%= if info[:memory_percent] > 65; "bar-warning"; elsif info[:memory_percent] > 85; "bar-danger"; end %>" style="width: <%= info[:memory_percent] %>%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Used</td>
+					<td><%= info[:memory_used] %> (<%= '%.2f' % info[:memory_percent] %>%)</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Total</td>
+					<td><%= info[:memory_total] %></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Load Averages</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 1 minute</td>
+					<td><%= info[:load_avg_01min] %></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 5 minutes</td>
+					<td><%= info[:load_avg_05min] %></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 15 minutes</td>
+					<td><%= info[:load_avg_15min] %></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer" id="proc-row">
+					<td class="title-cell"><h5>Processes</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div id="running-procs-bar" class="bar bar-success" style="width: <%= (info[:processes_num_running].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
+							<div id="sleeping-procs-bar" class="bar bar-info" style="width: <%= (info[:processes_num_sleeping].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
+							<div id="stopped-procs-bar" class="bar bar-warning" style="width: <%= (info[:processes_num_stopped].to_f * 100.0) / info[:processes_total].to_f %>%;"></div>
+							<div id="zombie-procs-bar" class="bar bar-danger" style="width: <%= 100.0 - (((info[:processes_num_running].to_f * 100.0) / info[:processes_total].to_f) + ((info[:processes_num_sleeping].to_f * 100.0) / info[:processes_total].to_f) + ((info[:processes_num_stopped].to_f * 100.0) / info[:processes_total].to_f)) %>%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden proc">
+					<td class="title-cell">Total</td>
+					<td><%= info[:processes_total] %></td>
+				</tr>
+				<tr id="running-row" class="hidden proc">
+					<td class="title-cell">Running</td>
+					<td><%= info[:processes_num_running] %></td>
+				</tr>
+				<tr id="sleeping-row" class="hidden proc">
+					<td class="title-cell">Sleeping</td>
+					<td><%= info[:processes_num_sleeping] %></td>
+				</tr>
+				<tr id="stopped-row" class="hidden proc">
+					<td class="title-cell">Stopped</td>
+					<td><%= info[:processes_num_stopped] %></td>
+				</tr>
+				<tr id="zombie-row" class="hidden proc">
+					<td class="title-cell">Zombie</td>
+					<td><%= info[:processes_num_zombie] %></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Processor</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Name</td>
+					<td><%= info[:processor_name] %></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Speed</td>
+					<td><%= info[:processor_speed] %></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of real cores</td>
+					<td><%= info[:processor_num_real_cores] %></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of virtual cores</td>
+					<td><%= info[:processor_num_virt_cores] %></td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="3"><h5>Cache</h5></td>
+				</tr>
+				<% info[:cache_levels].to_i.times do |level| %>
 
-			<% unless info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].nil? %>
-			<tr>
-				<td rowspan="2" class="section">Level <%= level + 1 %></td>
-				<td>Type</td>
-				<td>Data</td>
-			</tr>
-			<tr>
-				<td>Size</td>
-				<td><%= info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
-			</tr>
-			<% end %>
+				<% unless info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].nil? %>
+				<tr>
+					<td rowspan="2" class="section">Level <%= level + 1 %></td>
+					<td>Type</td>
+					<td>Data</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td><%= info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
+				</tr>
+				<% end %>
 
-			<% unless info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].nil? %>
-			<tr>
-				<td rowspan="2" class="section">Level <%= level + 1 %></td>
-				<td>Type</td>
-				<td>Instruction</td>
-			</tr>
-			<tr>
-				<td>Size</td>
-				<td><%= info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
-			</tr>
-			<% end %>
+				<% unless info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].nil? %>
+				<tr>
+					<td rowspan="2" class="section">Level <%= level + 1 %></td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td><%= info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
+				</tr>
+				<% end %>
 
-			<% unless info["LEVEL#{level + 1}_CACHE_SIZE".to_sym].nil? %>
-			<tr>
-				<td rowspan="2" class="section">Level <%= level + 1 %></td>
-				<td>Type</td>
-				<td>Instruction</td>
-			</tr>
-			<tr>
-				<td>Size</td>
-				<td><%= info["LEVEL#{level + 1}_CACHE_SIZE".to_sym].to_i / 1024 %> kB </td>
-			</tr>
-			<% end %>
-			<% end %>
-		</tbody>
-	</table>
-	<table class="table table-bordered table-condensed">
-		<tbody>
-			<tr>
-				<td colspan="<%= info[:table_interrupt_data_cols] %>"><h5>Interrupts</h5></td>
-			</tr>
-			<% info[:table_interrupt_data].each_line do |line| %>
-			<tr class="highlight-rows">
-			<% cols = line.split(","); cols.each_with_index do |item, index| %>
-			<% if (cols.first == "ERR:" or cols.first == "MIS:") and index == 1 %>
-				<td colspan="<%= info[:table_interrupt_data_cols] - 1 %>"><%= item %></td>
-			<% else %>
-				<td><%= item %></td>
-			<% end %>
-			<% end %>
-			</tr>
-			<% end %>
-		</tbody>
-	</table>
-	<% else %>
-	<p>Host could not be reached</p>
-	<% end %>
+				<% unless info["LEVEL#{level + 1}_CACHE_SIZE".to_sym].nil? %>
+				<tr>
+					<td rowspan="2" class="section">Level <%= level + 1 %></td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td><%= info["LEVEL#{level + 1}_CACHE_SIZE".to_sym].to_i / 1024 %> kB </td>
+				</tr>
+				<% end %>
+				<% end %>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="<%= info[:table_interrupt_data_cols] %>"><h5>Interrupts</h5></td>
+				</tr>
+				<% info[:table_interrupt_data].each_line do |line| %>
+				<tr class="highlight-rows">
+				<% cols = line.split(","); cols.each_with_index do |item, index| %>
+				<% if (cols.first == "ERR:" or cols.first == "MIS:") and index == 1 %>
+					<td colspan="<%= info[:table_interrupt_data_cols] - 1 %>"><%= item %></td>
+				<% else %>
+					<td><%= item %></td>
+				<% end %>
+				<% end %>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<% else %>
+		<p>Host could not be reached</p>
+		<% end %>
+		</div>
 	</div>
 	<% end %>
 </body>

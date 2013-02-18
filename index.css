@@ -10,6 +10,7 @@
 	padding-bottom: 0;
 	margin: 0;
 	margin-bottom: 1em;
+	cursor: pointer;
 }
 
 td.title-cell {
@@ -57,4 +58,8 @@ tr#zombie-row > td {
 
 .highlight-rows:hover {
 	background-color: #C7C9FF;
+}
+
+.cursor-pointer {
+	cursor: pointer;
 }
