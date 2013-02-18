@@ -27,10 +27,8 @@
 #	Bonus - Show details for each core: run "top" and then press 1
 
 # Cache:
-#	Number of levels: ls /sys/devices/system/cpu/cpu0/cache/ | wc -w
-#		Each line in the result is a level, in increasing order:
-#			Type: cat /sys/devices/system/cpu/cpu0/cache/index*/type
-#			Size: cat /sys/devices/system/cpu/cpu0/cache/index*/size
+#	Number of levels: getconf -a | grep -i cache | awk '{ if ($2 != "0") print $1 }' | awk -F "_" '{ print $1 }' | uniq | wc -l
+#		Info: getconf -a | grep -i cache | awk '{ if ($2 != "0") print $1 " " $2 }'
 
 # Memory: cat /proc/meminfo
 #	Total: cat /proc/meminfo | grep MemTotal | awk '{print $2 " " $3}'
@@ -67,8 +65,8 @@ INFO_COMMANDS = {
 	'load_avg_15min': "echo load_avg_15min=`uptime | awk '{print $12}' | sed s/,//`;",
 	# Parsing commands are chained using '&&' to ensure that they are only run after $cpu has been assigned a value
 	'cpu_utilization': "cpu=$(top -b -n 1 | grep ^Cpu | sed s/^.*:\ *//); echo cpu_utilization=$cpu && echo cpu_utilization_user=`echo $cpu | awk '{print $1}' | sed s/\%.*//` && echo cpu_utilization_system=`echo $cpu | awk '{print $2}' | sed s/\%.*//` && echo cpu_utilization_idle=`echo $cpu | awk '{print $4}' | sed s/\%.*//` && echo cpu_utilization_ni=`echo $cpu | awk '{print $3}' | sed s/\%.*//` && echo cpu_utilization_wa=`echo $cpu | awk '{print $5}' | sed s/\%.*//` && echo cpu_utilization_hi=`echo $cpu | awk '{print $6}' | sed s/\%.*//` && echo cpu_utilization_si=`echo $cpu | awk '{print $7}' | sed s/\%.*//` && echo cpu_utilization_st=`echo $cpu | awk '{print $8}' | sed s/\%.*//`;",
-	'cache_types': "let levels=`ls /sys/devices/system/cpu/cpu0/cache/ | wc -w`; for ((l=0; l<$levels; l++)); do let n=$l+1; echo \"lvl${n}_cache_type=`cat /sys/devices/system/cpu/cpu0/cache/index${l}/type | sed s/K/\ kB/`\"; done;",
-	'cache_sizes': "let levels=`ls /sys/devices/system/cpu/cpu0/cache/ | wc -w`; for ((l=0; l<$levels; l++)); do let n=$l+1; echo \"lvl${n}_cache_size=`cat /sys/devices/system/cpu/cpu0/cache/index${l}/size | sed s/K/\ kB/`\"; done;",
+	'cache_levels': "echo cache_levels=`getconf -a | grep -i cache | awk '{ if ($2 != \"0\") print $1 }' | awk -F \"_\" '{ print $1 }' | uniq | wc -l`;",
+	'cache_info': "getconf -a | grep -i cache | awk '{ if ($2 != \"0\") print $1 \"=\" $2 }';",
 	'memory_total': "cat /proc/meminfo | grep MemTotal | awk '{print \"memory_total=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'memory_free': "cat /proc/meminfo | grep MemFree | awk '{print \"memory_free=\" $2 " " $3}' | sed s/kB/\ kB/;",
 	'table_interrupt_data': "echo --START_INTERRUPT_TABLE--; cat /proc/interrupts; echo --END_INTERRUPT_TABLE--;" }
