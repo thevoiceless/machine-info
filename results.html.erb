@@ -11,8 +11,8 @@
 <body>
 	<% all_info.each do |info| %>
 	<div class="well">
-	<div class="page-header">
-		<h1 <%= "class=" << if info[:host_unreachable]; "\"muted\""; elsif info[:machine_rating] <= 50; "text-success"; elsif info[:machine_rating] <= 70; "text-warning"; else; "text-danger"; end %>><%= info[:name] %> <% unless info[:host_unreachable] %><small>As of <%= info[:date] %></small><% end %></h1>
+	<div class="machine-header">
+		<h1 <%= "class=" << if info[:host_unreachable]; "\"muted\""; elsif info[:machine_rating] <= 50; "text-success"; elsif info[:machine_rating] <= 70; "text-warning"; else; "text-danger"; end %>><%= info[:name] %> <small><% if info[:host_unreachable] %>Could not be reached<% else %>As of <%= info[:date] %></small><% end %></h1>
 	</div>
 	<div class="hidden machine-info">
 		<% unless info[:host_unreachable] %>
@@ -233,7 +233,7 @@
 			</tbody>
 		</table>
 		<% else %>
-		<p>Host could not be reached</p>
+		<p class="muted">No information</p>
 		<% end %>
 		</div>
 	</div>
