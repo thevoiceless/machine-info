@@ -36,15 +36,11 @@
 				</tr>
 				<tr class="hidden cpu">
 					<td class="title-cell">Total</td>
-					<td><%= '%.2f' % (100.0 - info[:cpu_utilization_idle].to_f).to_s %>%</td>
+					<td><%= '%.2f' % info[:cpu_percent].to_s %>%</td>
 				</tr>
 				<tr class="hidden cpu">
 					<td class="title-cell">User</td>
 					<td><%= '%.2f' % info[:cpu_utilization_user] %>%</td>
-				</tr>
-				<tr class="hidden cpu">
-					<td class="title-cell">System</td>
-					<td><%= '%.2f' % info[:cpu_utilization_system] %>%</td>
 				</tr>
 				<tr class="hidden cpu">
 					<td class="title-cell">System</td>
@@ -175,7 +171,6 @@
 					<td colspan="3"><h5>Cache</h5></td>
 				</tr>
 				<% info[:cache_levels].to_i.times do |level| %>
-
 				<% unless info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].nil? %>
 				<tr>
 					<td rowspan="2" class="section">Level <%= level + 1 %></td>
@@ -187,7 +182,6 @@
 					<td><%= info["LEVEL#{level + 1}_DCACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
 				</tr>
 				<% end %>
-
 				<% unless info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].nil? %>
 				<tr>
 					<td rowspan="2" class="section">Level <%= level + 1 %></td>
@@ -199,7 +193,6 @@
 					<td><%= info["LEVEL#{level + 1}_ICACHE_SIZE".to_sym].to_i / 1024 %> kB</td>
 				</tr>
 				<% end %>
-
 				<% unless info["LEVEL#{level + 1}_CACHE_SIZE".to_sym].nil? %>
 				<tr>
 					<td rowspan="2" class="section">Level <%= level + 1 %></td>

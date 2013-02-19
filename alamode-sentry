@@ -23,12 +23,11 @@
 #		5 min: uptime | awk '{print $11}' | sed s/,//
 #		15 min: uptime | awk '{print $12}' | sed s/,//
 
-# Current utilization: top -b -n 1 | grep ^Cpu
-#	Bonus - Show details for each core: run "top" and then press 1
+# Current CPU utilization: top -b -n 1 | grep ^Cpu
 
 # Cache:
 #	Number of levels: getconf -a | grep -i cache | awk '{ if ($2 != "0") print $1 }' | awk -F "_" '{ print $1 }' | uniq | wc -l
-#		Info: getconf -a | grep -i cache | awk '{ if ($2 != "0") print $1 " " $2 }'
+#	Info: getconf -a | grep -i cache | awk '{ if ($2 != "0") print $1 " " $2 }'
 
 # Memory: cat /proc/meminfo
 #	Total: cat /proc/meminfo | grep MemTotal | awk '{print $2 " " $3}'
