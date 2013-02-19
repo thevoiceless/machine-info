@@ -32,8 +32,9 @@ Information is saved in a text file with the same name as the machine from which
 * `load_avg_05min` - Load average for the last 5 minutes
 * `load_avg_15min` - Load average for the last 15 minutes
 * For each cache level:
-	* `lvl\*_cache_size` - Size, in kB
-	* `lvl\*_cache_type` - Type (data, instruction, unified)
+	* `LEVEL\*_DCACHE_SIZE` - Size, in kB, if there is a data cache for this level
+	* `LEVEL\*_ICACHE_SIZE` - Size, in kB, if there is an information cache for this level
+	* `LEVEL\*_CACHE_SIZE` - Size, in kB, if there is a unified cache for this level
 * `memory_free` - Free memory, in kB
 * `memory_total` - Total memory, in kB
 * `num_users` - The number of users logged in
