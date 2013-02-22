@@ -50,11 +50,7 @@ KEY_INTERRUPT_TABLE = "table_interrupt_data"
 INFO_COMMANDS = {
 	'date': "echo date=`date +\"%c\"`;",
 	'num_users': "echo num_users=`users | wc -w`;",
-	'processes_total': "echo processes_total=`ps -A --no-headers | wc -l`;",
-	'processes_num_running': "ps axo state | grep R | wc -l | awk '{print \"processes_num_running=\" $1}';",
-	'processes_num_sleeping': "ps axo state | grep S | wc -l | awk '{print \"processes_num_sleeping=\" $1}';",
-	'processes_num_stopped': "ps axo state | grep T | wc -l | awk '{print \"processes_num_stopped=\" $1}';",
-	'processes_num_zombie': "ps axo state | grep Z | wc -l | awk '{print \"processes_num_zombie=\" $1}';",
+	'process_info': "procstates=$(ps axo state); echo processes_total=$(echo " + '\"' + "$procstates" + '\"' + " | wc -l); echo processes_num_running=$(echo " + '\"' + "$procstates" + '\"' + " | grep R | wc -l); echo processes_num_sleeping=$(echo " + '\"' + "$procstates" + '\"' + " | grep S | wc -l); echo processes_num_stopped=$(echo " + '\"' + "$procstates" + '\"' + " | grep T | wc -l); echo processes_num_zombie=$(echo " + '\"' + "$procstates" + '\"' + " | grep Z | wc -l);",
 	'processor_name': "echo processor_name=`cat /proc/cpuinfo | grep \"model name\" | uniq | sed s/^.*:\ *//`;",
 	'processor_speed': "echo processor_speed=`cat /sys/devices/system/cpu/cpu*/cpufreq/cpuinfo_max_freq | uniq | awk '{print $1/1000000 }'` GHz;",
 	'processor_num_real_cores': "echo processor_num_real_cores=`cat /proc/cpuinfo | grep \"cpu cores\" | uniq | awk '{print $4}'`;",
@@ -63,7 +59,7 @@ INFO_COMMANDS = {
 	'load_avg_05min': "echo load_avg_05min=`uptime | awk '{print $11}' | sed s/,//`;",
 	'load_avg_15min': "echo load_avg_15min=`uptime | awk '{print $12}' | sed s/,//`;",
 	# Parsing commands are chained using '&&' to ensure that they are only run after $cpu has been assigned a value
-	'cpu_utilization': "cpu=$(top -b -n 1 | grep ^Cpu | sed s/^.*:\ *//); echo cpu_utilization=$cpu && echo cpu_utilization_user=`echo $cpu | awk '{print $1}' | sed s/\%.*//` && echo cpu_utilization_system=`echo $cpu | awk '{print $2}' | sed s/\%.*//` && echo cpu_utilization_idle=`echo $cpu | awk '{print $4}' | sed s/\%.*//` && echo cpu_utilization_ni=`echo $cpu | awk '{print $3}' | sed s/\%.*//` && echo cpu_utilization_wa=`echo $cpu | awk '{print $5}' | sed s/\%.*//` && echo cpu_utilization_hi=`echo $cpu | awk '{print $6}' | sed s/\%.*//` && echo cpu_utilization_si=`echo $cpu | awk '{print $7}' | sed s/\%.*//` && echo cpu_utilization_st=`echo $cpu | awk '{print $8}' | sed s/\%.*//`;",
+	'cpu_utilization': "cpu=$(top -b -n 1 | grep ^Cpu | sed s/^.*:\ *// | tail -n 1); echo cpu_utilization=$cpu && echo cpu_utilization_user=`echo $cpu | awk '{print $1}' | sed s/\%.*//` && echo cpu_utilization_system=`echo $cpu | awk '{print $2}' | sed s/\%.*//` && echo cpu_utilization_idle=`echo $cpu | awk '{print $4}' | sed s/\%.*//` && echo cpu_utilization_ni=`echo $cpu | awk '{print $3}' | sed s/\%.*//` && echo cpu_utilization_wa=`echo $cpu | awk '{print $5}' | sed s/\%.*//` && echo cpu_utilization_hi=`echo $cpu | awk '{print $6}' | sed s/\%.*//` && echo cpu_utilization_si=`echo $cpu | awk '{print $7}' | sed s/\%.*//` && echo cpu_utilization_st=`echo $cpu | awk '{print $8}' | sed s/\%.*//`;",
 	'cache_levels': "echo cache_levels=`getconf -a | grep -i cache | awk '{ if ($2 != \"0\") print $1 }' | awk -F \"_\" '{ print $1 }' | uniq | wc -l`;",
 	'cache_info': "getconf -a | grep -i cache | awk '{ if ($2 != \"0\") print $1 \"=\" $2 }' | egrep -v \"LINESIZE|ASSOC\";",
 	'memory_total': "cat /proc/meminfo | grep MemTotal | awk '{print \"memory_total=\" $2 " " $3}' | sed s/kB/\ kB/;",
