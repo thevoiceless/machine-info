@@ -2,6 +2,8 @@ $(document).ready(function() {
 	$('.machine-header').tooltip({'title':'Click to show/hide machine information'});
 
 	// Click machine name to show information
+	// Get all .machine-header and .machine-info elements, which occur in pairs
+	// When a .machine-header is clicked, expand its associated .machine-info
 	var $elements = $('.machine-header, .machine-info');
 	$('.machine-header').click(
 		function() {
