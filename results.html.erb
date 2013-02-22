@@ -26,7 +26,7 @@
 		</table>
 		<table class="table table-bordered table-condensed">
 			<tbody>
-				<tr class="cursor-pointer" id="cpu-row">
+				<tr class="cursor-pointer expand-highlight" id="cpu-row">
 					<td class="title-cell"><h5>CPU Utilization</h5></td>
 					<td class="vcenter">
 						<div class="progress">
@@ -70,7 +70,7 @@
 		</table>
 		<table class="table table-bordered table-condensed">
 			<tbody>
-				<tr class="cursor-pointer" id="mem-row">
+				<tr class="cursor-pointer expand-highlight" id="mem-row">
 					<td class="title-cell"><h5>Memory</h5></td>
 					<td class="vcenter">
 						<div class="progress">
@@ -109,7 +109,7 @@
 		</table>
 		<table class="table table-bordered table-condensed">
 			<tbody>
-				<tr class="cursor-pointer" id="proc-row">
+				<tr class="cursor-pointer expand-highlight" id="proc-row">
 					<td class="title-cell"><h5>Processes</h5></td>
 					<td class="vcenter">
 						<div class="progress">
@@ -213,7 +213,7 @@
 					<td colspan="<%= info[:table_interrupt_data_cols] %>"><h5>Interrupts</h5></td>
 				</tr>
 				<% info[:table_interrupt_data].each_line do |line| %>
-				<tr class="highlight-rows">
+				<tr class="interrupt-rows">
 				<% cols = line.split(","); cols.each_with_index do |item, index| %>
 				<% if (cols.first == "ERR:" or cols.first == "MIS:") and index == 1 %>
 					<td colspan="<%= info[:table_interrupt_data_cols] - 1 %>"><%= item %></td>

@@ -56,7 +56,11 @@ tr#zombie-row > td {
 	color: rgb(185, 74, 72);
 }
 
-.highlight-rows:hover {
+tr.expand-highlight:hover {
+	background-color: #EDEDED;
+}
+
+.interrupt-rows:hover {
 	background-color: #C7C9FF;
 }
 
