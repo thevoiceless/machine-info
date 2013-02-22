@@ -5,7 +5,7 @@ $(document).ready(function() {
 	var $elements = $('.machine-header, .machine-info');
 	$('.machine-header').click(
 		function() {
-			$elements.eq($elements.index(this) + 1).fadeToggle();
+			$elements.eq($elements.index(this) + 1).slideToggle();
 		});
 
 	$('tr#cpu-row').click(
