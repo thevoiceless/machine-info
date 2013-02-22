@@ -213,11 +213,11 @@
 		</table>
 		<table class="table table-bordered table-condensed">
 			<tbody>
-				<tr>
-					<td colspan="<%= info[:table_interrupt_data_cols] %>"><h5>Interrupts</h5></td>
+				<tr class="cursor-pointer expand-highlight" id="int-row">
+					<td colspan="<%= info[:table_interrupt_data_cols] %>"><h5>Interrupts (Click to show/hide)</h5></td>
 				</tr>
 				<% info[:table_interrupt_data].each_line do |line| %>
-				<tr class="interrupt-rows">
+				<tr class="hidden int mouseover-highlight">
 				<% cols = line.split(","); cols.each_with_index do |item, index| %>
 				<% if (cols.first == "ERR:" or cols.first == "MIS:") and index == 1 %>
 					<td colspan="<%= info[:table_interrupt_data_cols] - 1 %>"><%= item %></td>

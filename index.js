@@ -1,7 +1,4 @@
 $(document).ready(function() {
-	// Set tooltip on machine headers
-	// $('.machine-header').tooltip({'title':'Click to show/hide machine information'});
-
 	// Click machine name to show information
 	// Get all .machine-header and .machine-info elements, which occur in pairs
 	// When a .machine-header is clicked, expand its associated .machine-info
@@ -30,6 +27,14 @@ $(document).ready(function() {
 	$('tr#proc-row').click(
 		function() {
 			$('tr.hidden.proc').each(
+				function() {
+					$(this).fadeToggle()
+				})
+		});
+
+	$('tr#int-row').click(
+		function() {
+			$('tr.hidden.int').each(
 				function() {
 					$(this).fadeToggle()
 				})
