@@ -40,10 +40,14 @@ $(document).ready(function() {
 				})
 	});
 
-	$('#running-procs-bar').tooltip({'title':'Running','placement':'bottom'})
-	$('#sleeping-procs-bar').tooltip({'title':'Sleeping','placement':'bottom'})
-	$('#stopped-procs-bar').tooltip({'title':'Stopped','placement':'bottom'})
-	$('#zombie-procs-bar').tooltip({'title':'Zombie','placement':'bottom'})
+	$('div#running-procs-bar').tooltip({'title':'Running','placement':'bottom'});
+	// $('div#sleeping-procs-bar').each(
+	// 	function() {
+	// 		$(this).tooltip({'title':'Sleeping','placement':'bottom'})
+	// 	});
+	$('div#sleeping-procs-bar').tooltip({'title':'Sleeping','placement':'bottom'});
+	$('div#stopped-procs-bar').tooltip({'title':'Stopped','placement':'bottom'});
+	$('div#zombie-procs-bar').tooltip({'title':'Zombie','placement':'bottom'});
 
 	$('tr#proc-row').hover(
 		function() {
