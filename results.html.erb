@@ -9,6 +9,10 @@
 	<script src="<%= js_path %>"></script>
 </head>
 <body>
+	<div class="instructions">
+		<h4 class="center">Click on a hostname to see details</h4>
+		<p class="center">You can expand the CPU, Memory, Processes, and Interrupts sections for more information</p>
+	</div>
 	<% all_info.each do |info| %>
 	<div class="well">
 	<div class="machine-header">
