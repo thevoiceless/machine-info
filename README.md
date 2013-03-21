@@ -1,4 +1,4 @@
-Machine Information - Riley Moses
+Machine Information
 ==========
 
 Files
