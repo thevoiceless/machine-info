@@ -1,0 +1,60 @@
+LEVEL1_DCACHE_SIZE=32768
+LEVEL1_ICACHE_SIZE=32768
+LEVEL2_CACHE_SIZE=262144
+LEVEL3_CACHE_SIZE=8388608
+cache_levels=3
+cpu_utilization=3.8%us, 7.8%sy, 0.0%ni, 88.4%id, 0.0%wa, 0.0%hi, 0.0%si, 0.0%st
+cpu_utilization_hi=0.0
+cpu_utilization_idle=88.4
+cpu_utilization_ni=0.0
+cpu_utilization_si=0.0
+cpu_utilization_st=0.0
+cpu_utilization_system=7.8
+cpu_utilization_user=3.8
+cpu_utilization_wa=0.0
+date=Fri 22 Feb 2013 02:39:41 PM MST
+load_avg_01min=0.99
+load_avg_05min=1.00
+load_avg_15min=1.04
+memory_free=1921804 kB
+memory_total=8133496 kB
+num_users=3
+processes_num_running=2
+processes_num_sleeping=216
+processes_num_stopped=0
+processes_num_zombie=19
+processes_total=237
+processor_name=Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz
+processor_num_real_cores=4
+processor_num_virt_cores=8
+processor_speed=3.401 GHz
+table_interrupt_data
+,CPU0,CPU1,CPU2,CPU3,CPU4,CPU5,CPU6,CPU7,
+0:,20200,0,0,0,0,0,0,0,IR-IO-APIC-edge      timer
+1:,3,0,0,0,0,0,0,0,IR-IO-APIC-edge      i8042
+8:,1,0,0,0,0,0,0,0,IR-IO-APIC-edge      rtc0
+9:,0,0,0,0,0,0,0,0,IR-IO-APIC-fasteoi   acpi
+12:,4,0,0,0,0,0,0,0,IR-IO-APIC-edge      i8042
+16:,39,53721,0,0,0,0,0,0,IR-IO-APIC-fasteoi   ehci_hcd:usb1
+17:,635527,0,0,0,0,0,0,0,IR-IO-APIC-fasteoi   ehci_hcd:usb2
+40:,0,0,0,0,0,0,0,0,DMAR_MSI-edge      dmar0
+42:,6515415,0,0,0,0,0,0,0,IR-PCI-MSI-edge      ahci
+43:,155393321,0,0,0,0,0,0,0,IR-PCI-MSI-edge      eth0
+44:,25,0,0,0,0,0,0,0,IR-PCI-MSI-edge      mei
+45:,262,0,0,0,0,0,0,0,IR-PCI-MSI-edge      snd_hda_intel
+46:,6303,0,0,0,0,0,0,0,IR-PCI-MSI-edge      snd_hda_intel
+47:,130448,0,0,0,0,0,0,0,IR-PCI-MSI-edge      fglrx[0]@PCI:1:0:0
+NMI:,838390,1203143,1138325,933010,589958,1340552,1143958,2609713,Non-maskable interrupts
+LOC:,459302007,390015777,370094826,313668834,144290665,363824938,302751535,695627156,Local timer interrupts
+SPU:,0,0,0,0,0,0,0,0,Spurious interrupts
+PMI:,838390,1203143,1138325,933010,589958,1340552,1143958,2609713,Performance monitoring interrupts
+IWI:,0,0,0,0,0,0,0,0,IRQ work interrupts
+RES:,1016710704,931183859,987877369,1010160485,862270095,839656892,845695446,867271373,Rescheduling interrupts
+CAL:,23661,26009,27244,27865,31023,29864,30107,29649,Function call interrupts
+TLB:,1084737,986072,1043472,1049243,668449,725391,693963,736924,TLB shootdowns
+TRM:,0,0,0,0,0,0,0,0,Thermal event interrupts
+THR:,0,0,0,0,0,0,0,0,Threshold APIC interrupts
+MCE:,0,0,0,0,0,0,0,0,Machine check exceptions
+MCP:,20158,20158,20158,20158,20158,20158,20158,20158,Machine check polls
+ERR:,0
+MIS:,0

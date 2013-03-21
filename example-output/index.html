@@ -1,0 +1,4433 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Machine Information</title>
+	<link rel="stylesheet" type="text/css" href="/home/riley/Documents/school/csci442/code/project2/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/home/riley/Documents/school/csci442/code/project2/index.css">
+	<script src="/home/riley/Documents/school/csci442/code/project2/jquery-1.9.1.min.js"></script>
+	<script src="/home/riley/Documents/school/csci442/code/project2/bootstrap.min.js"></script>
+	<script src="/home/riley/Documents/school/csci442/code/project2/index.js"></script>
+</head>
+<body>
+	<div class="instructions">
+		<h4 class="center">Click on a hostname to see details</h4>
+		<p class="center">You can expand the CPU, Memory, Processes, and Interrupts sections for more information</p>
+	</div>
+	
+	<div class="well">
+	<div class="machine-header">
+		<h1 class=text-warning>bb136-03 <small>As of Fri 22 Feb 2013 02:39:41 PM MST</small></h1>
+	</div>
+	<div class="hidden machine-info">
+		
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td class="title-cell"><h5>Users Logged In</h5></td>
+					<td class="vcenter">3</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="cpu-row">
+					<td class="title-cell"><h5>CPU Utilization</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar bar-success" style="width: 11.599999999999994%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Total</td>
+					<td>11.60%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">User</td>
+					<td>3.80%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">System</td>
+					<td>7.80%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Nice</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">I/O Wait</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Hardware Interrupts</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Software Interrupts</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Steal Time</td>
+					<td>0.00%</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="mem-row">
+					<td class="title-cell"><h5>Memory</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar bar-warning" style="width: 76.37173486038475%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Used</td>
+					<td>6211692 kB (76.37%)</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Total</td>
+					<td>8133496 kB</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Load Averages</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 1 minute</td>
+					<td>0.99</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 5 minutes</td>
+					<td>1.00</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 15 minutes</td>
+					<td>1.04</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="proc-row">
+					<td class="title-cell"><h5>Processes</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div id="running-procs-bar" class="bar bar-success" style="width: 0.8438818565400844%;"></div>
+							<div id="sleeping-procs-bar" class="bar bar-info" style="width: 91.13924050632912%;"></div>
+							<div id="stopped-procs-bar" class="bar bar-warning" style="width: 0.0%;"></div>
+							<div id="zombie-procs-bar" class="bar bar-danger" style="width: 8.016877637130804%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden proc">
+					<td class="title-cell">Total</td>
+					<td>237</td>
+				</tr>
+				<tr id="running-row" class="hidden proc">
+					<td class="title-cell">Running</td>
+					<td>2</td>
+				</tr>
+				<tr id="sleeping-row" class="hidden proc">
+					<td class="title-cell">Sleeping</td>
+					<td>216</td>
+				</tr>
+				<tr id="stopped-row" class="hidden proc">
+					<td class="title-cell">Stopped</td>
+					<td>0</td>
+				</tr>
+				<tr id="zombie-row" class="hidden proc">
+					<td class="title-cell">Zombie</td>
+					<td>19</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Processor</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Name</td>
+					<td>Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Speed</td>
+					<td>3.401 GHz</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of real cores</td>
+					<td>4</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of virtual cores</td>
+					<td>8</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="3"><h5>Cache</h5></td>
+				</tr>
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 1</td>
+					<td>Type</td>
+					<td>Data</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>32 kB</td>
+				</tr>
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 1</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>32 kB</td>
+				</tr>
+				
+				
+				
+				
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 2</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>256 kB </td>
+				</tr>
+				
+				
+				
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 3</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>8192 kB </td>
+				</tr>
+				
+				
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="int-row">
+					<td colspan="10"><h5>Interrupts (Click to show/hide)</h5></td>
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td></td>
+				
+				
+				
+					<td>CPU0</td>
+				
+				
+				
+					<td>CPU1</td>
+				
+				
+				
+					<td>CPU2</td>
+				
+				
+				
+					<td>CPU3</td>
+				
+				
+				
+					<td>CPU4</td>
+				
+				
+				
+					<td>CPU5</td>
+				
+				
+				
+					<td>CPU6</td>
+				
+				
+				
+					<td>CPU7</td>
+				
+				
+				
+					<td>
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>0:</td>
+				
+				
+				
+					<td>20200</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      timer
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>1:</td>
+				
+				
+				
+					<td>3</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      i8042
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>8:</td>
+				
+				
+				
+					<td>1</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      rtc0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>9:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   acpi
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>12:</td>
+				
+				
+				
+					<td>4</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      i8042
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>16:</td>
+				
+				
+				
+					<td>39</td>
+				
+				
+				
+					<td>53721</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   ehci_hcd:usb1
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>17:</td>
+				
+				
+				
+					<td>635527</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   ehci_hcd:usb2
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>40:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>DMAR_MSI-edge      dmar0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>42:</td>
+				
+				
+				
+					<td>6515415</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      ahci
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>43:</td>
+				
+				
+				
+					<td>155393321</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      eth0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>44:</td>
+				
+				
+				
+					<td>25</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      mei
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>45:</td>
+				
+				
+				
+					<td>262</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      snd_hda_intel
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>46:</td>
+				
+				
+				
+					<td>6303</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      snd_hda_intel
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>47:</td>
+				
+				
+				
+					<td>130448</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      fglrx[0]@PCI:1:0:0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>NMI:</td>
+				
+				
+				
+					<td>838390</td>
+				
+				
+				
+					<td>1203143</td>
+				
+				
+				
+					<td>1138325</td>
+				
+				
+				
+					<td>933010</td>
+				
+				
+				
+					<td>589958</td>
+				
+				
+				
+					<td>1340552</td>
+				
+				
+				
+					<td>1143958</td>
+				
+				
+				
+					<td>2609713</td>
+				
+				
+				
+					<td>Non-maskable interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>LOC:</td>
+				
+				
+				
+					<td>459302007</td>
+				
+				
+				
+					<td>390015777</td>
+				
+				
+				
+					<td>370094826</td>
+				
+				
+				
+					<td>313668834</td>
+				
+				
+				
+					<td>144290665</td>
+				
+				
+				
+					<td>363824938</td>
+				
+				
+				
+					<td>302751535</td>
+				
+				
+				
+					<td>695627156</td>
+				
+				
+				
+					<td>Local timer interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>SPU:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Spurious interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>PMI:</td>
+				
+				
+				
+					<td>838390</td>
+				
+				
+				
+					<td>1203143</td>
+				
+				
+				
+					<td>1138325</td>
+				
+				
+				
+					<td>933010</td>
+				
+				
+				
+					<td>589958</td>
+				
+				
+				
+					<td>1340552</td>
+				
+				
+				
+					<td>1143958</td>
+				
+				
+				
+					<td>2609713</td>
+				
+				
+				
+					<td>Performance monitoring interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>IWI:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IRQ work interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>RES:</td>
+				
+				
+				
+					<td>1016710704</td>
+				
+				
+				
+					<td>931183859</td>
+				
+				
+				
+					<td>987877369</td>
+				
+				
+				
+					<td>1010160485</td>
+				
+				
+				
+					<td>862270095</td>
+				
+				
+				
+					<td>839656892</td>
+				
+				
+				
+					<td>845695446</td>
+				
+				
+				
+					<td>867271373</td>
+				
+				
+				
+					<td>Rescheduling interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>CAL:</td>
+				
+				
+				
+					<td>23661</td>
+				
+				
+				
+					<td>26009</td>
+				
+				
+				
+					<td>27244</td>
+				
+				
+				
+					<td>27865</td>
+				
+				
+				
+					<td>31023</td>
+				
+				
+				
+					<td>29864</td>
+				
+				
+				
+					<td>30107</td>
+				
+				
+				
+					<td>29649</td>
+				
+				
+				
+					<td>Function call interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>TLB:</td>
+				
+				
+				
+					<td>1084737</td>
+				
+				
+				
+					<td>986072</td>
+				
+				
+				
+					<td>1043472</td>
+				
+				
+				
+					<td>1049243</td>
+				
+				
+				
+					<td>668449</td>
+				
+				
+				
+					<td>725391</td>
+				
+				
+				
+					<td>693963</td>
+				
+				
+				
+					<td>736924</td>
+				
+				
+				
+					<td>TLB shootdowns
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>TRM:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Thermal event interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>THR:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Threshold APIC interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MCE:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Machine check exceptions
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MCP:</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>20158</td>
+				
+				
+				
+					<td>Machine check polls
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>ERR:</td>
+				
+				
+				
+					<td colspan="9">0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MIS:</td>
+				
+				
+				
+					<td colspan="9">0
+</td>
+				
+				
+				</tr>
+				
+			</tbody>
+		</table>
+		
+		</div>
+	</div>
+	
+	<div class="well">
+	<div class="machine-header">
+		<h1 class=text-success>bb136-05 <small>As of Fri 22 Feb 2013 02:39:42 PM MST</small></h1>
+	</div>
+	<div class="hidden machine-info">
+		
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td class="title-cell"><h5>Users Logged In</h5></td>
+					<td class="vcenter">1</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="cpu-row">
+					<td class="title-cell"><h5>CPU Utilization</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar bar-success" style="width: 11.400000000000006%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Total</td>
+					<td>11.40%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">User</td>
+					<td>10.50%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">System</td>
+					<td>1.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Nice</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">I/O Wait</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Hardware Interrupts</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Software Interrupts</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Steal Time</td>
+					<td>0.00%</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="mem-row">
+					<td class="title-cell"><h5>Memory</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar " style="width: 36.23047211186924%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Used</td>
+					<td>2946804 kB (36.23%)</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Total</td>
+					<td>8133496 kB</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Load Averages</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 1 minute</td>
+					<td>0.00</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 5 minutes</td>
+					<td>0.01</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 15 minutes</td>
+					<td>0.05</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="proc-row">
+					<td class="title-cell"><h5>Processes</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div id="running-procs-bar" class="bar bar-success" style="width: 0.5102040816326531%;"></div>
+							<div id="sleeping-procs-bar" class="bar bar-info" style="width: 98.9795918367347%;"></div>
+							<div id="stopped-procs-bar" class="bar bar-warning" style="width: 0.0%;"></div>
+							<div id="zombie-procs-bar" class="bar bar-danger" style="width: 0.5102040816326507%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden proc">
+					<td class="title-cell">Total</td>
+					<td>196</td>
+				</tr>
+				<tr id="running-row" class="hidden proc">
+					<td class="title-cell">Running</td>
+					<td>1</td>
+				</tr>
+				<tr id="sleeping-row" class="hidden proc">
+					<td class="title-cell">Sleeping</td>
+					<td>194</td>
+				</tr>
+				<tr id="stopped-row" class="hidden proc">
+					<td class="title-cell">Stopped</td>
+					<td>0</td>
+				</tr>
+				<tr id="zombie-row" class="hidden proc">
+					<td class="title-cell">Zombie</td>
+					<td>1</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Processor</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Name</td>
+					<td>Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Speed</td>
+					<td>3.401 GHz</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of real cores</td>
+					<td>4</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of virtual cores</td>
+					<td>8</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="3"><h5>Cache</h5></td>
+				</tr>
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 1</td>
+					<td>Type</td>
+					<td>Data</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>32 kB</td>
+				</tr>
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 1</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>32 kB</td>
+				</tr>
+				
+				
+				
+				
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 2</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>256 kB </td>
+				</tr>
+				
+				
+				
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 3</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>8192 kB </td>
+				</tr>
+				
+				
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="int-row">
+					<td colspan="10"><h5>Interrupts (Click to show/hide)</h5></td>
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td></td>
+				
+				
+				
+					<td>CPU0</td>
+				
+				
+				
+					<td>CPU1</td>
+				
+				
+				
+					<td>CPU2</td>
+				
+				
+				
+					<td>CPU3</td>
+				
+				
+				
+					<td>CPU4</td>
+				
+				
+				
+					<td>CPU5</td>
+				
+				
+				
+					<td>CPU6</td>
+				
+				
+				
+					<td>CPU7</td>
+				
+				
+				
+					<td>
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>0:</td>
+				
+				
+				
+					<td>4388</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      timer
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>1:</td>
+				
+				
+				
+					<td>3</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      i8042
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>8:</td>
+				
+				
+				
+					<td>1</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      rtc0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>9:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   acpi
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>12:</td>
+				
+				
+				
+					<td>4</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      i8042
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>16:</td>
+				
+				
+				
+					<td>39</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   ehci_hcd:usb1
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>17:</td>
+				
+				
+				
+					<td>485518</td>
+				
+				
+				
+					<td>2</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   ehci_hcd:usb2
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>40:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>DMAR_MSI-edge      dmar0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>42:</td>
+				
+				
+				
+					<td>1523393</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      ahci
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>43:</td>
+				
+				
+				
+					<td>33617220</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      eth0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>44:</td>
+				
+				
+				
+					<td>25</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      mei
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>45:</td>
+				
+				
+				
+					<td>278</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      snd_hda_intel
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>46:</td>
+				
+				
+				
+					<td>2563</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      snd_hda_intel
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>47:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      fglrx[0]@PCI:1:0:0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>NMI:</td>
+				
+				
+				
+					<td>267881</td>
+				
+				
+				
+					<td>334984</td>
+				
+				
+				
+					<td>261652</td>
+				
+				
+				
+					<td>244175</td>
+				
+				
+				
+					<td>215682</td>
+				
+				
+				
+					<td>221265</td>
+				
+				
+				
+					<td>213580</td>
+				
+				
+				
+					<td>214737</td>
+				
+				
+				
+					<td>Non-maskable interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>LOC:</td>
+				
+				
+				
+					<td>64713469</td>
+				
+				
+				
+					<td>57144215</td>
+				
+				
+				
+					<td>45742917</td>
+				
+				
+				
+					<td>42745074</td>
+				
+				
+				
+					<td>35924144</td>
+				
+				
+				
+					<td>37441399</td>
+				
+				
+				
+					<td>36160885</td>
+				
+				
+				
+					<td>35956237</td>
+				
+				
+				
+					<td>Local timer interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>SPU:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Spurious interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>PMI:</td>
+				
+				
+				
+					<td>267881</td>
+				
+				
+				
+					<td>334984</td>
+				
+				
+				
+					<td>261652</td>
+				
+				
+				
+					<td>244175</td>
+				
+				
+				
+					<td>215682</td>
+				
+				
+				
+					<td>221265</td>
+				
+				
+				
+					<td>213580</td>
+				
+				
+				
+					<td>214737</td>
+				
+				
+				
+					<td>Performance monitoring interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>IWI:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IRQ work interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>RES:</td>
+				
+				
+				
+					<td>905247644</td>
+				
+				
+				
+					<td>887305701</td>
+				
+				
+				
+					<td>924589569</td>
+				
+				
+				
+					<td>925438383</td>
+				
+				
+				
+					<td>616712271</td>
+				
+				
+				
+					<td>616579218</td>
+				
+				
+				
+					<td>617694545</td>
+				
+				
+				
+					<td>614539194</td>
+				
+				
+				
+					<td>Rescheduling interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>CAL:</td>
+				
+				
+				
+					<td>7120</td>
+				
+				
+				
+					<td>8797</td>
+				
+				
+				
+					<td>9038</td>
+				
+				
+				
+					<td>8173</td>
+				
+				
+				
+					<td>10412</td>
+				
+				
+				
+					<td>9735</td>
+				
+				
+				
+					<td>9916</td>
+				
+				
+				
+					<td>10400</td>
+				
+				
+				
+					<td>Function call interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>TLB:</td>
+				
+				
+				
+					<td>766217</td>
+				
+				
+				
+					<td>513693</td>
+				
+				
+				
+					<td>804088</td>
+				
+				
+				
+					<td>791155</td>
+				
+				
+				
+					<td>480088</td>
+				
+				
+				
+					<td>638591</td>
+				
+				
+				
+					<td>565530</td>
+				
+				
+				
+					<td>537732</td>
+				
+				
+				
+					<td>TLB shootdowns
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>TRM:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Thermal event interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>THR:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Threshold APIC interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MCE:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Machine check exceptions
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MCP:</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>4348</td>
+				
+				
+				
+					<td>Machine check polls
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>ERR:</td>
+				
+				
+				
+					<td colspan="9">0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MIS:</td>
+				
+				
+				
+					<td colspan="9">0
+</td>
+				
+				
+				</tr>
+				
+			</tbody>
+		</table>
+		
+		</div>
+	</div>
+	
+	<div class="well">
+	<div class="machine-header">
+		<h1 class=text-success>bb136-06 <small>As of Fri 22 Feb 2013 02:39:43 PM MST</small></h1>
+	</div>
+	<div class="hidden machine-info">
+		
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td class="title-cell"><h5>Users Logged In</h5></td>
+					<td class="vcenter">12</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="cpu-row">
+					<td class="title-cell"><h5>CPU Utilization</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar bar-success" style="width: 1.7999999999999972%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Total</td>
+					<td>1.80%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">User</td>
+					<td>1.70%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">System</td>
+					<td>0.10%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Nice</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">I/O Wait</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Hardware Interrupts</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Software Interrupts</td>
+					<td>0.00%</td>
+				</tr>
+				<tr class="hidden cpu">
+					<td class="title-cell">Steal Time</td>
+					<td>0.00%</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="mem-row">
+					<td class="title-cell"><h5>Memory</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div class="bar " style="width: 32.681248014383975%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Used</td>
+					<td>2658128 kB (32.68%)</td>
+				</tr>
+				<tr class="hidden mem">
+					<td class="title-cell">Total</td>
+					<td>8133496 kB</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Load Averages</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 1 minute</td>
+					<td>0.00</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 5 minutes</td>
+					<td>0.03</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Last 15 minutes</td>
+					<td>0.05</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="proc-row">
+					<td class="title-cell"><h5>Processes</h5></td>
+					<td class="vcenter">
+						<div class="progress">
+							<div id="running-procs-bar" class="bar bar-success" style="width: 0.4854368932038835%;"></div>
+							<div id="sleeping-procs-bar" class="bar bar-info" style="width: 97.57281553398059%;"></div>
+							<div id="stopped-procs-bar" class="bar bar-warning" style="width: 0.0%;"></div>
+							<div id="zombie-procs-bar" class="bar bar-danger" style="width: 1.9417475728155296%;"></div>
+						</div>
+					</td>
+				</tr>
+				<tr class="hidden proc">
+					<td class="title-cell">Total</td>
+					<td>206</td>
+				</tr>
+				<tr id="running-row" class="hidden proc">
+					<td class="title-cell">Running</td>
+					<td>1</td>
+				</tr>
+				<tr id="sleeping-row" class="hidden proc">
+					<td class="title-cell">Sleeping</td>
+					<td>201</td>
+				</tr>
+				<tr id="stopped-row" class="hidden proc">
+					<td class="title-cell">Stopped</td>
+					<td>0</td>
+				</tr>
+				<tr id="zombie-row" class="hidden proc">
+					<td class="title-cell">Zombie</td>
+					<td>4</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="2"><h5>Processor</h5></td>
+				</tr>
+				<tr>
+					<td class="title-cell">Name</td>
+					<td>Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Speed</td>
+					<td>3.401 GHz</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of real cores</td>
+					<td>4</td>
+				</tr>
+				<tr>
+					<td class="title-cell">Number of virtual cores</td>
+					<td>8</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr>
+					<td colspan="3"><h5>Cache</h5></td>
+				</tr>
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 1</td>
+					<td>Type</td>
+					<td>Data</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>32 kB</td>
+				</tr>
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 1</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>32 kB</td>
+				</tr>
+				
+				
+				
+				
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 2</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>256 kB </td>
+				</tr>
+				
+				
+				
+				
+				
+				<tr>
+					<td rowspan="2" class="section">Level 3</td>
+					<td>Type</td>
+					<td>Instruction</td>
+				</tr>
+				<tr>
+					<td>Size</td>
+					<td>8192 kB </td>
+				</tr>
+				
+				
+			</tbody>
+		</table>
+		<table class="table table-bordered table-condensed">
+			<tbody>
+				<tr class="cursor-pointer expand-highlight" id="int-row">
+					<td colspan="10"><h5>Interrupts (Click to show/hide)</h5></td>
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td></td>
+				
+				
+				
+					<td>CPU0</td>
+				
+				
+				
+					<td>CPU1</td>
+				
+				
+				
+					<td>CPU2</td>
+				
+				
+				
+					<td>CPU3</td>
+				
+				
+				
+					<td>CPU4</td>
+				
+				
+				
+					<td>CPU5</td>
+				
+				
+				
+					<td>CPU6</td>
+				
+				
+				
+					<td>CPU7</td>
+				
+				
+				
+					<td>
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>0:</td>
+				
+				
+				
+					<td>7011</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      timer
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>1:</td>
+				
+				
+				
+					<td>3</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      i8042
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>8:</td>
+				
+				
+				
+					<td>1</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      rtc0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>9:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   acpi
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>12:</td>
+				
+				
+				
+					<td>4</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-edge      i8042
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>16:</td>
+				
+				
+				
+					<td>39</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   ehci_hcd:usb1
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>17:</td>
+				
+				
+				
+					<td>576672</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-IO-APIC-fasteoi   ehci_hcd:usb2
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>40:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>DMAR_MSI-edge      dmar0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>42:</td>
+				
+				
+				
+					<td>2243582</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      ahci
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>43:</td>
+				
+				
+				
+					<td>53323350</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      eth0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>44:</td>
+				
+				
+				
+					<td>25</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      mei
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>45:</td>
+				
+				
+				
+					<td>578</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      snd_hda_intel
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>46:</td>
+				
+				
+				
+					<td>3663</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      snd_hda_intel
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>47:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IR-PCI-MSI-edge      fglrx[0]@PCI:1:0:0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>NMI:</td>
+				
+				
+				
+					<td>64449</td>
+				
+				
+				
+					<td>124643</td>
+				
+				
+				
+					<td>74674</td>
+				
+				
+				
+					<td>68721</td>
+				
+				
+				
+					<td>51634</td>
+				
+				
+				
+					<td>34226</td>
+				
+				
+				
+					<td>34003</td>
+				
+				
+				
+					<td>36893</td>
+				
+				
+				
+					<td>Non-maskable interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>LOC:</td>
+				
+				
+				
+					<td>32796919</td>
+				
+				
+				
+					<td>30811735</td>
+				
+				
+				
+					<td>23482499</td>
+				
+				
+				
+					<td>21976717</td>
+				
+				
+				
+					<td>12309613</td>
+				
+				
+				
+					<td>10465937</td>
+				
+				
+				
+					<td>12693087</td>
+				
+				
+				
+					<td>11262942</td>
+				
+				
+				
+					<td>Local timer interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>SPU:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Spurious interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>PMI:</td>
+				
+				
+				
+					<td>64449</td>
+				
+				
+				
+					<td>124643</td>
+				
+				
+				
+					<td>74674</td>
+				
+				
+				
+					<td>68721</td>
+				
+				
+				
+					<td>51634</td>
+				
+				
+				
+					<td>34226</td>
+				
+				
+				
+					<td>34003</td>
+				
+				
+				
+					<td>36893</td>
+				
+				
+				
+					<td>Performance monitoring interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>IWI:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>IRQ work interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>RES:</td>
+				
+				
+				
+					<td>135227086</td>
+				
+				
+				
+					<td>119596243</td>
+				
+				
+				
+					<td>143976957</td>
+				
+				
+				
+					<td>142103978</td>
+				
+				
+				
+					<td>95215019</td>
+				
+				
+				
+					<td>91533581</td>
+				
+				
+				
+					<td>99031310</td>
+				
+				
+				
+					<td>98796932</td>
+				
+				
+				
+					<td>Rescheduling interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>CAL:</td>
+				
+				
+				
+					<td>11653</td>
+				
+				
+				
+					<td>12153</td>
+				
+				
+				
+					<td>12960</td>
+				
+				
+				
+					<td>14318</td>
+				
+				
+				
+					<td>14308</td>
+				
+				
+				
+					<td>14183</td>
+				
+				
+				
+					<td>13352</td>
+				
+				
+				
+					<td>13900</td>
+				
+				
+				
+					<td>Function call interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>TLB:</td>
+				
+				
+				
+					<td>561139</td>
+				
+				
+				
+					<td>460332</td>
+				
+				
+				
+					<td>627329</td>
+				
+				
+				
+					<td>595947</td>
+				
+				
+				
+					<td>425364</td>
+				
+				
+				
+					<td>363150</td>
+				
+				
+				
+					<td>380884</td>
+				
+				
+				
+					<td>409945</td>
+				
+				
+				
+					<td>TLB shootdowns
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>TRM:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Thermal event interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>THR:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Threshold APIC interrupts
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MCE:</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>0</td>
+				
+				
+				
+					<td>Machine check exceptions
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MCP:</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>6970</td>
+				
+				
+				
+					<td>Machine check polls
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>ERR:</td>
+				
+				
+				
+					<td colspan="9">0
+</td>
+				
+				
+				</tr>
+				
+				<tr class="hidden int mouseover-highlight">
+				
+				
+					<td>MIS:</td>
+				
+				
+				
+					<td colspan="9">0
+</td>
+				
+				
+				</tr>
+				
+			</tbody>
+		</table>
+		
+		</div>
+	</div>
+	
+	<div class="well">
+	<div class="machine-header">
+		<h1 class="muted">bb136-123 <small>Could not be reached</h1>
+	</div>
+	<div class="hidden machine-info">
+		
+		<p class="muted">No information</p>
+		
+		</div>
+	</div>
+	
+</body>
+</html>
