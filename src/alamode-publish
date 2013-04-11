@@ -144,7 +144,8 @@ end
 
 # Generate the HTML via embedded Ruby (ERB)
 # Sort the array by machine name
-all_info.sort_by! { |machine| machine[:name] }
+# all_info.sort_by! { |machine| machine[:name] }
+all_info = all_info.sort_by { |machine| machine[:name] }
 # Load the template
 erb_html = ERB.new(File.open("results.html.erb").read)
 # Determine the paths to resources
